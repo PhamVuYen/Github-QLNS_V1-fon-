@@ -3,18 +3,27 @@ package com.example.qlnv.model;
 import java.util.Date;
 
 public class Task {
-    private String user_id, task_id, task_name, task_status;
+    private String user_id, task_id, task_name, task_status,manage_id;
     private Date createDay, deadline;
     public Task() {
     }
 
-    public Task(String user_id, String task_id, String task_name, String task_status, Date createDay, Date deadline) {
+    public Task(String user_id, String task_id, String task_name, String task_status, String manage_id, Date createDay, Date deadline) {
         this.user_id = user_id;
         this.task_id = task_id;
         this.task_name = task_name;
         this.task_status = task_status;
+        this.manage_id = manage_id;
         this.createDay = createDay;
         this.deadline = deadline;
+    }
+
+    public String getManage_id() {
+        return manage_id;
+    }
+
+    public void setManage_id(String manage_id) {
+        this.manage_id = manage_id;
     }
 
     public String getTask_id() {

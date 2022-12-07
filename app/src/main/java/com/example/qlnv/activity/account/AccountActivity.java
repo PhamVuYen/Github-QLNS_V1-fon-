@@ -33,7 +33,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnChangePassword:
                 startActivity(new Intent(AccountActivity.this, ChangePasswordActivity.class));
             case R.id.btnLogOut:
-//                startActivity(new Intent(AccountActivity.this, ChangePasswordActivity.class));
+                startActivity(new Intent(AccountActivity.this,LoginActivity.class));
         }
     }
 }

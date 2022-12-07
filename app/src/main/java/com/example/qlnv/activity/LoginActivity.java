@@ -77,17 +77,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             JSONObject jsonObject = response.getJSONObject(i);
                             String msv = jsonObject.getString("MaNV");
                             String password = jsonObject.getString("Password");
-                            Log.d("edtUser",edtTextUser.getText().toString());
                             if (edtTextUser.getText().toString().equals(msv) && edtPassword.getText().toString().equals(password)) {
                                 String role = jsonObject.getString("ChucVu");
                                 String name = jsonObject.getString("TenNV");
                                 Employee employee = Injector.getEmployee();
                                 employee.setIdentified(msv);
                                 employee.setName(name);
+                                employee.setPassword(password);
                                 employee.setRole(Role.Admin);
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             } else {
-                                Toast.makeText(LoginActivity.this, "Fail to connect", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(LoginActivity.this, "Fail to connect", Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             Toast.makeText(LoginActivity.this, "Fail to connect server employee", Toast.LENGTH_LONG).show();
