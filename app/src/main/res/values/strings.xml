@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">QLNV</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="menu_settings">Settings</string>
+
+    <string name="title_activity_thiet_lap_truong_phong">ThietLapTruongPhongActivity</string>
+
+    <string name="title_activity_danh_sach_nhan_vien">DanhSachNhanVienActivity</string>
+
+    <string name="title_activity_them_nhan_vien">ThemNhanVienActivity</string>
+
+    <string name="title_activity_chuyen_phong_ban">ChuyenPhongBanActivity</string>
+    <string name="qlnv">Quản lý phòng ban</string>
+
+    <string name="welcome_back">Welcome back !</string>
+    <string name="login_to_continue">Login to continue</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="menu">Menu</string>
+    <string name="start_quiz">TimeKeeping</string>
+    <string name="assigntask">Assign task</string>
+    <string name="mytask">My task</string>
+    <string name="edit_password">Change password</string>
+    <string name="logout">Log out</string>
+    <string name="manage_user">Manage User</string>
+    <string name="account">Account</string>
+    <string name="summary">Summary</string>
+    <string name="autologin">Auto login</string>
+    <string name="loading">Loading ...</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="save_password">Save password</string>
+    <string name="add_user">Thêm nhân viên</string>
+    <string name="edit_user">Sửa thông tin nhân viên</string>
+</resources>
