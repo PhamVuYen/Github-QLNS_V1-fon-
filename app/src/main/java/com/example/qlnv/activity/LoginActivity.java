@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 employee.setIdentified(msv);
                                 employee.setName(name);
                                 employee.setPassword(password);
-                                employee.setRole(Role.Admin);
+                                employee.setRole("ADMIN");
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             } else {
 //                                Toast.makeText(LoginActivity.this, "Fail to connect", Toast.LENGTH_LONG).show();

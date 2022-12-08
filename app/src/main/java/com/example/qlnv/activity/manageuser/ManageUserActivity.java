@@ -80,8 +80,10 @@ public class ManageUserActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        arrRoom.clear();
-        adapterPb.notifyDataSetChanged();
+        if (adapterPb != null) {
+            arrRoom.clear();
+            adapterPb.notifyDataSetChanged();
+        }
         getDataRoom();
     }
 
@@ -147,9 +149,7 @@ public class ManageUserActivity extends Activity {
                             if (gioitinh.equals("nam")) {
                                 sex = true;
                             }
-
-                            Role role = Role.Employee;
-                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,role,room.getId(),stk,luong);
+                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,room.getId(),stk,luong);
                             room.dsnv.add(employee);
                             adapterPb.notifyDataSetChanged();
                         }

@@ -72,7 +72,7 @@ public class SetManagerActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                arrNvForTP.get(arg2).setRole(Role.Manager);
+                arrNvForTP.get(arg2).setRole("Trưởng phòng");
                 if (somethingChecked) {
                     CheckedTextView cv = (CheckedTextView) arg1;
                     cv.setChecked(false);
@@ -80,9 +80,9 @@ public class SetManagerActivity extends Activity {
                 CheckedTextView cv = (CheckedTextView) arg1;
                 if (!cv.isChecked()) {
                     cv.setChecked(true);
-                    arrNvForTP.get(arg2).setRole(Role.Manager);
+                    arrNvForTP.get(arg2).setRole("Trưởng phòng");
                 } else {
-                    arrNvForTP.get(arg2).setRole(Role.Employee);
+                    arrNvForTP.get(arg2).setRole("Nhân viên");
                 }
                 lastChecked = arg2;
                 somethingChecked = true;
@@ -95,19 +95,19 @@ public class SetManagerActivity extends Activity {
 
         adapterForPP = new ArrayAdapter<Employee>(this, android.R.layout.simple_list_item_multiple_choice, arrNvForPP);
         lvSubManager.setAdapter(adapterForPP);
-        lvSubManager.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                CheckedTextView cv = (CheckedTextView) view;
-                if (!cv.isChecked()) {
-                    cv.setChecked(true);
-                    arrNvForPP.get(i).setRole(Role.SubManager);
-                } else {
-                    cv.setChecked(false);
-                    arrNvForPP.get(i).setRole(Role.Employee);
-                }
-            }
-        });
+//        lvSubManager.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                CheckedTextView cv = (CheckedTextView) view;
+//                if (!cv.isChecked()) {
+//                    cv.setChecked(true);
+//                    arrNvForPP.get(i).setRole(Role.SubManager);
+//                } else {
+//                    cv.setChecked(false);
+//                    arrNvForPP.get(i).setRole(Role.Employee);
+//                }
+//            }
+//        });
 
 
         Intent i = getIntent();
@@ -136,8 +136,9 @@ public class SetManagerActivity extends Activity {
     }
 
     public void doApply() {
-
-        resetTPToDB(employee);
+        if (employee != null) {
+            resetTPToDB(employee);
+        }
         if (pb.dsnv != null) {
             Employee employee = pb.dsnv.get(lastChecked);
             updateTPToDB(employee);
@@ -188,9 +189,9 @@ public class SetManagerActivity extends Activity {
                         for (int index = 0; index < pb.dsnv.size(); index++) {
                             Employee employee = pb.dsnv.get(index);
                             if (index == lastChecked) {
-                                employee.setRole(Role.Manager);
+                                employee.setRole("Trưởng phòng");
                             } else {
-                                employee.setRole(Role.Employee);
+                                employee.setRole("Nhân viên");
                             }
                             pb.dsnv.set(index, employee);
                         }
