@@ -12,13 +12,26 @@ import android.widget.ListView;
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.qlnv.Injector;
 import com.example.qlnv.R;
 import com.example.qlnv.model.Role;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * màn hình sẽ hiển thị danh sách nhân viên vào 2 ListView khác nhau
@@ -37,12 +50,14 @@ public class SetManagerActivity extends Activity {
     TextView btnApply;
     int lastChecked = -1;
     Room pb = null;
+    Employee employee = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thiet_lap_truong_phong);
         getFormWidgets();
+
     }
 
 
@@ -98,6 +113,13 @@ public class SetManagerActivity extends Activity {
         Intent i = getIntent();
         Bundle bundle = i.getBundleExtra("DATA");
         pb = (Room) bundle.getSerializable("PHONGBAN");
+        if (pb.dsnv != null) {
+            for (int index = 0; index < pb.dsnv.size(); index++) {
+                if (pb.dsnv.get(index).getRole().equals("Trưởng phòng")) {
+                    employee = pb.dsnv.get(index);
+                }
+            }
+        }
         addNvToListTP(pb);
         addNvToListPP(pb);
         adapterForTP.notifyDataSetChanged();
@@ -114,23 +136,90 @@ public class SetManagerActivity extends Activity {
     }
 
     public void doApply() {
-        Intent i = getIntent();
-        Bundle bundle = new Bundle();
-        for (int index = 0; index < pb.dsnv.size(); index++) {
-            Employee employee = pb.dsnv.get(index);
-            if (index == lastChecked) {
-                employee.setRole(Role.Manager);
-            } else {
-                employee.setRole(Role.Employee);
-            }
-            pb.dsnv.set(index, employee);
+        resetTPToDB(employee);
+        if (pb.dsnv != null) {
+            Employee employee = pb.dsnv.get(lastChecked);
+            updateTPToDB(employee);
         }
 
-        bundle.putSerializable("PHONGBAN", pb);
-        i.putExtra("DATA", bundle);
-        setResult(ManageUserActivity.THIET_LAP_TP_PP_THANHCONG, i);
-        finish();
     }
+
+    private void resetTPToDB(Employee nv) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_EDIT_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseResetTPToDB",response);
+                    } catch (Exception e) {
+//                        Toast.makeText(SetManagerActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV", nv.getId());
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void updateTPToDB(Employee nv) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_EDIT_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("updateTPToDB",response);
+                        Intent i = getIntent();
+                        Bundle bundle = new Bundle();
+                        for (int index = 0; index < pb.dsnv.size(); index++) {
+                            Employee employee = pb.dsnv.get(index);
+                            if (index == lastChecked) {
+                                employee.setRole(Role.Manager);
+                            } else {
+                                employee.setRole(Role.Employee);
+                            }
+                            pb.dsnv.set(index, employee);
+                        }
+                        bundle.putSerializable("PHONGBAN", pb);
+                        i.putExtra("DATA", bundle);
+                        setResult(ManageUserActivity.THIET_LAP_TP_PP_THANHCONG, i);
+                        finish();
+                    } catch (Exception e) {
+//                        Toast.makeText(SetManagerActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV", nv.getId());
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+
 
     public void addNvToListTP(Room pb) {
         arrNvForTP.clear();
