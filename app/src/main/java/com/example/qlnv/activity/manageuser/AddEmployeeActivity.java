@@ -107,22 +107,12 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
 
     }
 
-    /**
-     * đơn thuần là xóa trắng dữ liệu của các control
-     * rồi focus tới mã
-     */
     public void doXoaTrang() {
         editManv.setText("");
         editTenNv.setText("");
         editManv.requestFocus();
     }
 
-    /**
-     * hàm lưu nhân viên theo phòng ban
-     * truyền nhân viên qua MainActivity
-     * MainActivity có nhiệm vụ lấy được nhân viên này
-     * và đưa họ vào phòng ban chọn lúc nãy
-     */
     public void doLuuNhanVien() {
         nv = new Employee();
         nv.setId(editManv.getText() + "");

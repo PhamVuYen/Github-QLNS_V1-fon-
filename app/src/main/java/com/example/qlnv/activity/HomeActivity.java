@@ -95,5 +95,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finishAffinity();
+        System.exit(0);  // exit app
+    }
 }
