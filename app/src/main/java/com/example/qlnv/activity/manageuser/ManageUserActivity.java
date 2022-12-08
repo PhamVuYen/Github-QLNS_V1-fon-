@@ -144,7 +144,6 @@ public class ManageUserActivity extends Activity {
                             String stk = jsonObject.getString("SoTk");
                             String luong = jsonObject.getString("MucLuong");
                             String chucvu = jsonObject.getString("ChucVu");
-
                             Boolean sex = false;
                             if (gioitinh.equals("nam")) {
                                 sex = true;
@@ -319,18 +318,12 @@ public class ManageUserActivity extends Activity {
 //            adapterPb.arrRoom.clear();
 //            getDataRoom();
         }
-        //Màn hình thiết lập lạnh đão/ cập nhật danh sách trả
-        //kết quả về
         else if (resultCode == THIET_LAP_TP_PP_THANHCONG ||
                 resultCode == CAPNHAT_DS_NHAN_VIEN_THANHCONG) {
 
             Bundle bundle = data.getBundleExtra("DATA");
             Room pb = (Room) bundle.getSerializable("PHONGBAN");
-            //đơn thuần là xóa danh sách cũ
             pbSelected.getListNhanVien().clear();
-            //rồi cập nhật lại toàn bộ danh sách mới
-            //sinh viên có thể chọn giải pháp thông minh hơn
-            //tức là phần tử nào bị ảnh hưởng thì xử lý phần tử đó
             pbSelected.getListNhanVien().addAll(pb.getListNhanVien());
             adapterPb.notifyDataSetChanged();
         }

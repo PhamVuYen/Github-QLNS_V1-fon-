@@ -72,7 +72,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.assigntask:
-                startActivity(new Intent(HomeActivity.this, AssignTaskActivity.class));
+                if (employee.getRole().equals("Trưởng phòng")) {
+                    startActivity(new Intent(HomeActivity.this, AssignTaskActivity.class));
+                } else {
+                    Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.mytask:
                 break;

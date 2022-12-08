@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             JSONObject jsonObject = response.getJSONObject(i);
                             String msv = jsonObject.getString("MaNV");
                             String password = jsonObject.getString("Password");
+                            String idRoom = jsonObject.getString("MaPB");
                             if (edtTextUser.getText().toString().equals(msv) && edtPassword.getText().toString().equals(password)) {
                                 String role = jsonObject.getString("ChucVu");
                                 String name = jsonObject.getString("TenNV");
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 employee.setIdentified(msv);
                                 employee.setName(name);
                                 employee.setPassword(password);
+                                employee.setIdRoom(idRoom);
                                 employee.setRole("ADMIN");
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             } else {

@@ -38,7 +38,10 @@ import com.example.qlnv.activity.HomeActivity;
 import com.example.qlnv.activity.manageuser.AddEmployeeActivity;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
 import com.example.qlnv.model.Employee;
+import com.example.qlnv.model.Room;
 import com.example.qlnv.model.Task;
+
+import org.json.JSONObject;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -58,6 +61,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     private TextView tvHourEnd, tvDateEnd;
     private Spinner spinner;
     private String[] separated = new String[2];
+    private Employee employee = null;
+    private Room room = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,10 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
         tvDateEnd = findViewById(R.id.tvDateEnd);
         spinner = findViewById(R.id.spinner1);
 
-
+        employee = Injector.getEmployee();
+        room = new Room();
+        room.setId(employee.getIdRoom());
+        getUserInRoom(room);
         task_id_unique = UUID.randomUUID().toString();
         task_assigned_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +116,11 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             }
         });
 
-        String[] items = new String[]{"1", "2", "three"};
+        String[] items = new String[room.dsnv.size()];
+        for (int i=0;i<room.dsnv.size();i++) {
+            items[i] = room.dsnv.get(i).getName() + "-" + room.dsnv.get(i).getId();
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
 
@@ -121,6 +133,61 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             }
         });
     }
+
+    private void getUserInRoom(Room room) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_USER_ROOM, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        JSONObject jsonObject1 = new JSONObject(response);
+                        for (int i = 0 ; i < jsonObject1.length() ; i++) {
+                            JSONObject jsonObject = jsonObject1.getJSONObject(String.valueOf(i));
+                            String mnv = jsonObject.getString("MaNV");
+                            String name = jsonObject.getString("TenNV");
+                            Date date = new Date();
+                            String diachi = jsonObject.getString("DiaChi");
+                            String gioitinh = jsonObject.getString("GioiTinh");
+                            String phone = jsonObject.getString("Phone");
+                            String email = jsonObject.getString("Email");
+                            String cmnd = jsonObject.getString("SoCMND");
+                            String stk = jsonObject.getString("SoTk");
+                            String luong = jsonObject.getString("MucLuong");
+                            String chucvu = jsonObject.getString("ChucVu");
+                            Boolean sex = false;
+                            if (gioitinh.equals("nam")) {
+                                sex = true;
+                            }
+                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,room.getId(),stk,luong);
+                            room.dsnv.add(employee);
+                        }
+
+                    } catch (Exception e) {
+//                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaPB", room.getId());
+                return param;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+    }
+
+
 
     private void updateTask() {
 
