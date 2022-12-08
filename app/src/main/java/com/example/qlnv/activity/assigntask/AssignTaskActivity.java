@@ -191,7 +191,6 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
 
 
     private void updateTask() {
-
         if (edtTaskName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Task name can't be empty", Toast.LENGTH_SHORT).show();
         } else {

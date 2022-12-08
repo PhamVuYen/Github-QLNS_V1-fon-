@@ -120,6 +120,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         this.finishAffinity();
         System.exit(0);  // exit app
     }
+
     private void getUserInRoom(String idroom) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_USER_ROOM, new Response.Listener<String>() {
@@ -132,20 +133,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             JSONObject jsonObject = jsonObject1.getJSONObject(String.valueOf(i));
                             String mnv = jsonObject.getString("MaNV");
                             String name = jsonObject.getString("TenNV");
-                            Date date = new Date();
-                            String diachi = jsonObject.getString("DiaChi");
-                            String gioitinh = jsonObject.getString("GioiTinh");
-                            String phone = jsonObject.getString("Phone");
-                            String email = jsonObject.getString("Email");
-                            String cmnd = jsonObject.getString("SoCMND");
-                            String stk = jsonObject.getString("SoTk");
-                            String luong = jsonObject.getString("MucLuong");
-                            String chucvu = jsonObject.getString("ChucVu");
-                            Boolean sex = false;
-                            if (gioitinh.equals("nam")) {
-                                sex = true;
-                            }
-                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,idroom,stk,luong);
+                            Employee employee = new Employee();
+                            employee.setIdentified(mnv);
+                            employee.setName(name);
                             arrayList.add(employee);
                         }
                         Intent intent = new Intent(HomeActivity.this, AssignTaskActivity.class);
@@ -155,13 +145,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (Exception e) {
 //                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(HomeActivity.this,error+"",Toast.LENGTH_LONG).show();
             }
         }) {
             @Nullable
