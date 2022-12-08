@@ -146,7 +146,7 @@ public class SetManagerActivity extends Activity {
 
     private void resetTPToDB(Employee nv) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_EDIT_USER, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_EDIT_LANHDAO, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
@@ -176,7 +176,7 @@ public class SetManagerActivity extends Activity {
 
     private void updateTPToDB(Employee nv) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_EDIT_USER, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_INSERT_LANHDAO, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
