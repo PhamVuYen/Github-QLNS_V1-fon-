@@ -136,6 +136,7 @@ public class SetManagerActivity extends Activity {
     }
 
     public void doApply() {
+
         resetTPToDB(employee);
         if (pb.dsnv != null) {
             Employee employee = pb.dsnv.get(lastChecked);
