@@ -47,6 +47,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     private String[] separated = new String[2];
     private Employee employee = null;
     private Room room = null;
+    private ArrayList<Employee> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
         tvDateEnd = findViewById(R.id.tvDateEnd);
         spinner = findViewById(R.id.spinner1);
 
-        employee = Injector.getEmployee();
-        room = new Room();
-        room.setId(employee.getIdRoom());
-        getUserInRoom(room);
+//        employee = Injector.getEmployee();
+//        getUserInRoom(employee.getIdRoom());
+        arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
         task_id_unique = UUID.randomUUID().toString();
         task_assigned_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +117,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             }
         });
 
-        String[] items = new String[room.dsnv.size()];
-        for (int i=0;i<room.dsnv.size();i++) {
-            items[i] = room.dsnv.get(i).getName() + "-" + room.dsnv.get(i).getId();
+        String[] items = new String[arrayList.size()];
+        for (int i=0;i<arrayList.size();i++) {
+            items[i] = arrayList.get(i).getName() + "-" + arrayList.get(i).getId();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -134,7 +135,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
         });
     }
 
-    private void getUserInRoom(Room room) {
+    private void getUserInRoom(String idroom) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_USER_ROOM, new Response.Listener<String>() {
             @Override
@@ -160,7 +161,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                                 sex = true;
                             }
                             Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,room.getId(),stk,luong);
-                            room.dsnv.add(employee);
+                            arrayList.add(employee);
                         }
 
                     } catch (Exception e) {
@@ -179,7 +180,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("MaPB", room.getId());
+                param.put("MaPB", idroom);
                 return param;
             }
         };
