@@ -19,7 +19,7 @@ public class Injector {
     public static String URL_EDIT_USER = "http://" + IP +":8080/QLNS_V1/Staffs/editStaff.php";
     public static String URL_UPDATE_PASS = "";
 
-    public static String URL_ADD_TASK = "aewbewvwveewqwdqwdwjcfưeâsffewef111fff";
+    public static String URL_ADD_TASK = "aewbewvwveewqwdqwdef111fff";
 
 
 
