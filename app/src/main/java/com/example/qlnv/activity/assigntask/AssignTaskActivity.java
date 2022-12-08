@@ -146,7 +146,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                 task.setManage_id(Injector.getEmployee().getId());
                 task.setCreateDay(new Date());
                 task.setUser_id(separated[1]);
-                task.setTask_status("Doing");
+                task.setTask_status("Chưa xong");
                 task.setDeadline(deadline);
                 addTaskToDB(task);
             }
