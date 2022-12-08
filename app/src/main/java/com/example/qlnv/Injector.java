@@ -32,6 +32,9 @@ public class Injector {
 
     public static String URL_ASSIGN_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/addJob.php";
     public static String URL_QUERY_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/getJob.php";
+    public static String URL_UPDATE_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/editJob.php";
+    public static String URL_DELETE_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/delJob.php";
+
 
 
     public static Employee getEmployee() {
