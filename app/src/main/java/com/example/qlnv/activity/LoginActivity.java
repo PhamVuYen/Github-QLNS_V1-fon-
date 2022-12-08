@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 String role = jsonObject.getString("ChucVu");
                                 String name = jsonObject.getString("TenNV");
                                 Employee employee = Injector.getEmployee();
+                                employee.setId(msv);
                                 employee.setIdentified(msv);
                                 employee.setName(name);
                                 employee.setPassword(password);

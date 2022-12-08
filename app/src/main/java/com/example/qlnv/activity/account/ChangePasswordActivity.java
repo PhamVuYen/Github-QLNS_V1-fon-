@@ -41,7 +41,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Employee employee = Injector.getEmployee();
                 if (edtOldPass.getText().toString().equals(employee.getPassword())) {
-                    if (edtNewPass.getText().toString().equals(edtOldPass.getText().toString())) {
+                    if (edtNewPass.getText().toString().equals(edtNewPassAgain.getText().toString())) {
+                        employee.setPassword(edtNewPass.getText().toString());
                         updatePasswordToDB(employee);
                     } else {
                         Toast.makeText(ChangePasswordActivity.this, "New password isn't equal with confirm password", Toast.LENGTH_LONG).show();
@@ -68,6 +69,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 if (response != null) {
                     try {
                         Log.d("response", response);
+                        finish();
                     } catch (Exception e) {
 //                        Toast.makeText(ChangePasswordActivity.this, "Some error", Toast.LENGTH_LONG).show();
                     }
