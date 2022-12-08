@@ -156,7 +156,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
 
     private void addTaskToDB(Task task) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ADD_USER, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ASSIGN_TASK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
@@ -182,9 +182,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                 param.put("MaCViec", task.getTask_id());
                 param.put("TenCviec", task.getTask_name());
                 param.put("DeadlineCV", Injector.datetoStringTime(task.getDeadline()));
-                param.put("CreateBy", task.getManage_id());
                 param.put("CreateDate", Injector.dateToString(task.getCreateDay()));
-                param.put("AssignTo", task.getUser_id());
+                param.put("MaNV", task.getUser_id());
                 param.put("Status",task.getTask_status());
                 return param;
             }
