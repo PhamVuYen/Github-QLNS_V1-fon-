@@ -117,7 +117,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
         nv = new Employee();
         nv.setId(editManv.getText() + "");
         nv.setName(editTenNv.getText() + "");
-        nv.setRole(Role.Employee);
+        nv.setRole("Nhân viên");
         nv.setSex(!radNam.isChecked());
         nv.setAddress(edtAddress.getText() + "");
         nv.setEmail(edtEmail.getText() +"");

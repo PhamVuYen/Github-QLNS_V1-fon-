@@ -65,7 +65,7 @@ public class Room  implements Serializable {
     public Employee getTruongPhong() {
         for (int i = 0; i < dsnv.size(); i++) {
             Employee nv = dsnv.get(i);
-            if (nv.getRole() == Role.Manager)
+            if (nv.getRole().equals("Trưởng phòng"))
                 return nv;
         }
         return null;

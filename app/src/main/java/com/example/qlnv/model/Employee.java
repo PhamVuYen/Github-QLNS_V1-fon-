@@ -22,13 +22,13 @@ public class Employee  implements Serializable{
 	private String phone;
 	private String email;
 	private String identified;
-	private Role role;
+	private String role;
 	private String idRoom;
 	private String stk;
 	private String mucluong;
 	private String password;
 
-	public Employee(@NotNull String id, String name, Date dateOfbirth, String address, boolean sex, String phone, String email, String identified, Role role, String idRoom, String stk, String mucluong) {
+	public Employee(@NotNull String id, String name, Date dateOfbirth, String address, boolean sex, String phone, String email, String identified, String role, String idRoom, String stk, String mucluong) {
 		this.id = id;
 		this.name = name;
 		this.dateOfbirth = dateOfbirth;
@@ -124,12 +124,15 @@ public class Employee  implements Serializable{
 	public void setSex(boolean sex) {
 		this.sex = sex;
 	}
-	public Role getRole() {
+
+	public String getRole() {
 		return role;
 	}
-	public void setRole(Role chucvu) {
-		this.role = chucvu;
+
+	public void setRole(String role) {
+		this.role = role;
 	}
+
 	public String getRoom() {
 		return idRoom;
 	}

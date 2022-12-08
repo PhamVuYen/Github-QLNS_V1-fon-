@@ -116,7 +116,7 @@ public class EditEmployeeActivity extends AppCompatActivity implements DatePicke
 			@Override
 			public void onClick(View v) {
 				nv.setName(editTenNv.getText() + "");
-				nv.setRole(Role.Employee);
+				nv.setRole("Nhân viên");
 				nv.setSex(!radNam.isChecked());
 				nv.setAddress(edtAddress.getText() + "");
 				nv.setEmail(edtEmail.getText() +"");

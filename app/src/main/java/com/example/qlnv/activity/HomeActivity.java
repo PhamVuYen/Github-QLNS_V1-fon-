@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.timekeeping:
                 break;
             case R.id.manageuser:
-                if (employee.getRole().equals(Role.Admin)) {
+                if (employee.getRole().equals("ADMIN")) {
                     startActivity(new Intent(HomeActivity.this, ManageUserActivity.class));
                 } else {
                     Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();

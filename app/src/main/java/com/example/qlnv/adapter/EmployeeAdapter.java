@@ -34,7 +34,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employee> {
 		Employee nv=arrNhanVien.get(position);
 		txtnv.setText(nv.toString());
 		String strMota="";
-		String cv = "Chức vụ: "+nv.getRole().getRole();
+		String cv = "Chức vụ: "+nv.getRole();
 		String gt = "Giới tính: "+(nv.isSex()?"Nữ":"Nam");
 		img.setImageResource(R.drawable.ic_girl);
 		if(!nv.isSex())
