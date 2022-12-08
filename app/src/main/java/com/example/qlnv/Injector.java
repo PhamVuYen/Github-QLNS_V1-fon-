@@ -30,6 +30,8 @@ public class Injector {
     public static String URL_EDIT_LANHDAO = "http://" + IP +":8080/QLNS_V1/Staffs/setChucVu.php";
     public static String URL_INSERT_LANHDAO = "http://" + IP +":8080/QLNS_V1/Staffs/bonhiemChucVu.php";
 
+    public static String URL_ASSIGN_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/addJob.php";
+    public static String URL_QUERY_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/getJob.php";
 
 
     public static Employee getEmployee() {
