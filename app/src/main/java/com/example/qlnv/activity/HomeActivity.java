@@ -29,6 +29,7 @@ import com.example.qlnv.Injector;
 import com.example.qlnv.R;
 import com.example.qlnv.activity.account.AccountActivity;
 import com.example.qlnv.activity.assigntask.AssignTaskActivity;
+import com.example.qlnv.activity.assigntask.TaskActivity;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Role;
@@ -58,8 +59,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         account.setOnClickListener(this);
         summary.setOnClickListener(this);
         employee = Injector.getEmployee();
-        tvUserName.setText(employee.getName() +"-"+employee.getIdentified());
+        tvUserName.setText(employee.getName() +"-"+employee.getId());
         tvRole.setText("ADMIN");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getUserInRoom(employee.getIdRoom());
     }
 
     void initView() {
@@ -87,13 +94,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.assigntask:
-                if (employee.getRole().equals("Trưởng phòng")) {
-                    getUserInRoom(employee.getIdRoom());
+                if (!employee.getRole().equals("ADMIN")) {
+                    if (arrayList.size() > 0) {
+                        Intent intent = new Intent(HomeActivity.this, AssignTaskActivity.class);
+                        intent.putExtra("listuser",arrayList);
+                        startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.mytask:
+                startActivity(new Intent(HomeActivity.this, TaskActivity.class));
                 break;
             case R.id.account:
                 startActivity(new Intent(HomeActivity.this, AccountActivity.class));
@@ -134,13 +146,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             String mnv = jsonObject.getString("MaNV");
                             String name = jsonObject.getString("TenNV");
                             Employee employee = new Employee();
-                            employee.setIdentified(mnv);
+                            employee.setId(mnv);
                             employee.setName(name);
                             arrayList.add(employee);
                         }
-                        Intent intent = new Intent(HomeActivity.this, AssignTaskActivity.class);
-                        intent.putExtra("listuser",arrayList);
-                        startActivity(intent);
                     Log.d("responseUser",response);
                     } catch (Exception e) {
 //                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();

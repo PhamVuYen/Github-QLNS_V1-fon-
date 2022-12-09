@@ -49,7 +49,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Task Name:"
+                android:text="Deadline:"
                 android:textColor="@android:color/white"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -73,15 +73,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Name:"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:text="Status:"
                 android:textColor="@android:color/white"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
             <TextView
                 android:layout_marginLeft="8dp"
                 android:id="@+id/tvStatus"

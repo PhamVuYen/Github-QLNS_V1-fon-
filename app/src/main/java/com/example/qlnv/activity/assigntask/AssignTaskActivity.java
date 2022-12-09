@@ -65,7 +65,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     private Employee employee = null;
     private Room room = null;
     private ArrayList<Employee> arrayList = new ArrayList<>();
-
+    private String ID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +78,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
 
 //        employee = Injector.getEmployee();
 //        getUserInRoom(employee.getIdRoom());
+        employee = Injector.getEmployee();
+        ID = employee.getId();
+        Log.d("employee", ID+"");
         arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
         task_id_unique = UUID.randomUUID().toString();
         task_assigned_btn.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +120,13 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             }
         });
 
-        String[] items = new String[arrayList.size()];
+        ArrayList<String> items = new ArrayList<>();
         for (int i=0;i<arrayList.size();i++) {
-            items[i] = arrayList.get(i).getName() + "-" + arrayList.get(i).getId();
+            String value = "";
+            if (!arrayList.get(i).getId().equals(ID)) {
+               value = arrayList.get(i).getName() + "-" + arrayList.get(i).getId();
+               items.add(value);
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -135,59 +142,6 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
         });
     }
 
-    private void getUserInRoom(String idroom) {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_USER_ROOM, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response != null) {
-                    try {
-                        JSONObject jsonObject1 = new JSONObject(response);
-                        for (int i = 0 ; i < jsonObject1.length() ; i++) {
-                            JSONObject jsonObject = jsonObject1.getJSONObject(String.valueOf(i));
-                            String mnv = jsonObject.getString("MaNV");
-                            String name = jsonObject.getString("TenNV");
-                            Date date = new Date();
-                            String diachi = jsonObject.getString("DiaChi");
-                            String gioitinh = jsonObject.getString("GioiTinh");
-                            String phone = jsonObject.getString("Phone");
-                            String email = jsonObject.getString("Email");
-                            String cmnd = jsonObject.getString("SoCMND");
-                            String stk = jsonObject.getString("SoTk");
-                            String luong = jsonObject.getString("MucLuong");
-                            String chucvu = jsonObject.getString("ChucVu");
-                            Boolean sex = false;
-                            if (gioitinh.equals("nam")) {
-                                sex = true;
-                            }
-                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,room.getId(),stk,luong);
-                            arrayList.add(employee);
-                        }
-
-                    } catch (Exception e) {
-//                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();
-                    }
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> param = new HashMap<>();
-                param.put("MaPB", idroom);
-                return param;
-            }
-        };
-
-        requestQueue.add(stringRequest);
-    }
-
 
 
     private void updateTask() {
@@ -198,7 +152,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                 Toast.makeText(this, "You must select time end task", Toast.LENGTH_SHORT).show();
             } else {
                 String time = tvDateEnd.getText().toString() +" " + tvHourEnd.getText().toString();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date deadline = null;
                 try {
                     deadline = df.parse(time);
@@ -211,10 +165,12 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                 task.setTask_id(task_id_unique);
                 task.setTask_name(edtTaskName.getText().toString());
                 task.setManage_id(Injector.getEmployee().getId());
-                task.setCreateDay(new Date());
+                task.setCreateDay(Calendar.getInstance().getTime());
+                task.setDeadline(new Date());
                 task.setUser_id(separated[1]);
                 task.setTask_status("Chưa xong");
-                task.setDeadline(deadline);
+//                task.setDeadline(deadline);
+                Log.d("time",task.getDeadline()+"|"+task.getCreateDay());
                 addTaskToDB(task);
             }
 
@@ -247,8 +203,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
                 param.put("MaCViec", task.getTask_id());
-                param.put("TenCviec", task.getTask_name());
-                param.put("DeadlineCV", Injector.datetoStringTime(task.getDeadline()));
+                param.put("TenCViec", task.getTask_name());
+                param.put("DealineCV", Injector.datetoStringTime(task.getDeadline()));
                 param.put("CreateDate", Injector.dateToString(task.getCreateDay()));
                 param.put("MaNV", task.getUser_id());
                 param.put("Status",task.getTask_status());

@@ -2,6 +2,7 @@ package com.example.qlnv.activity.assigntask;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -23,9 +24,12 @@ import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
 import com.example.qlnv.model.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +39,18 @@ public class TaskActivity extends AppCompatActivity {
     Employee employee;
     ArrayList<Task> tasks = new ArrayList<>();
     AdapterTask adapterTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         initView();
         employee = Injector.getEmployee();
+        tasks.add(new Task("abcd","abcd","acbd","abcd","abcd",new Date(),new Date()));
+        adapterTask = new AdapterTask(tasks, TaskActivity.this);
+        rvTask.setAdapter(adapterTask);
+        rvTask.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
         getTaskOfUser(employee);
-        adapterTask = new AdapterTask(tasks,getApplicationContext());
     }
 
 
@@ -55,23 +63,31 @@ public class TaskActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_TASK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("response", response);
                 if (response != null) {
                     try {
-                        JSONObject jsonObject1 = new JSONObject(response);
-                        for (int i = 0 ; i < jsonObject1.length() ; i++) {
-
+                        JSONObject jsonArray = new JSONObject(response);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(String.valueOf(i));
+                            String TenCViec = jsonObject.getString("TenCViec");
+                            String MaCViec = jsonObject.getString("MaCViec");
+                            String userid = jsonObject.getString("MaNV");
+//                        Date DealineCV = (Date) jsonObject.get("DealineCV");
+                            String Status = jsonObject.getString("Status");
+                            tasks.add(new Task(userid,MaCViec,TenCViec,Status,"abcd",new Date(),new Date()));
+                            adapterTask.notifyDataSetChanged();
                         }
-                        adapterTask.notifyDataSetChanged();
-                    } catch (Exception e) {
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
                 }
+
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("error", error + "");
             }
         }) {
             @Nullable
