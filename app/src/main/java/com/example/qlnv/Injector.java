@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Injector {
     public static Employee employee;
-    public static String IP = "172.16.2.54";
+    public static String IP = "172.16.200.92";
     public static String URL_USER = "http://"+IP+":8080/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP +":8080/QLNS_V1/Staffs/getStaffsRoom.php";
     public static String URL_ADD_USER = "http://" + IP +":8080/QLNS_V1/Staffs/addStaff.php";
@@ -19,7 +19,7 @@ public class Injector {
     public static String URL_EDIT_USER = "http://" + IP +":8080/QLNS_V1/Staffs/editStaff.php";
     public static String URL_UPDATE_PASS = "http://" + IP +":8080/QLNS_V1/Login/updatePassword.php";
 
-    public static String URL_ADD_TASK = "aewbewvwveewqwdqwdef111fff";
+   // public static String URL_ADD_TASK = "aewbewvwveewqwdqwdef111fff";
 
 
 

@@ -1,14 +1,23 @@
 package com.example.qlnv.model;
 
-import java.util.Date;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Task {
-    private String user_id, task_id, task_name, task_status,manage_id;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
+import java.util.Date;
+@Entity(tableName = "task")
+public class Task implements Serializable {
+    @PrimaryKey(autoGenerate = false)
+    @NotNull
+    private String task_id;
+    private String user_id, task_name, task_status,manage_id;
     private Date createDay, deadline;
     public Task() {
     }
 
-    public Task(String user_id, String task_id, String task_name, String task_status, String manage_id, Date createDay, Date deadline) {
+    public Task(String user_id, @NotNull String task_id, String task_name, String task_status, String manage_id, Date createDay, Date deadline) {
         this.user_id = user_id;
         this.task_id = task_id;
         this.task_name = task_name;
