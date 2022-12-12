@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         summary.setOnClickListener(this);
         employee = Injector.getEmployee();
         tvUserName.setText(employee.getName() +"-"+employee.getId());
-        tvRole.setText("ADMIN");
+        tvRole.setText(employee.getRole());
     }
 
     @Override
