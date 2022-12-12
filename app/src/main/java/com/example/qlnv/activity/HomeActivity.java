@@ -111,17 +111,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, AccountActivity.class));
                 break;
             case R.id.summary:
-                Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePicker = new TimePickerDialog(
-                        HomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.d("hour",hourOfDay + ":" + minute);
-                    }
-                },hour,minute,true);
-                timePicker.show();
+//                Calendar calendar = Calendar.getInstance();
+//                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//                int minute = calendar.get(Calendar.MINUTE);
+//                TimePickerDialog timePicker = new TimePickerDialog(
+//                        HomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                        Log.d("hour",hourOfDay + ":" + minute);
+//                    }
+//                },hour,minute,true);
+//                timePicker.show();
                 break;
         }
     }

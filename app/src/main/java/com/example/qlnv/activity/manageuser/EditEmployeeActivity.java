@@ -35,14 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * class này cho phép sửa nhân viên được chọn trong Danhsachnhanvien
- * sử dụng chung Layout với Thêm nhân viên
- * Không cho sửa mã số nhân viên
- * khi bấm lưu thì cập nhật lại (rất đơn giản)
- * @author drthanh
- *
- */
+
 public class EditEmployeeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 	private TextView btnXoaTrang, btnLuuNhanVien,tvDate;
 	private EditText editTenNv,edtAddress,edtPhone,edtEmail,edtCMND,edtSTK,edtLuong;

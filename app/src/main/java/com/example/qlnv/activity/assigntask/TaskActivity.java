@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,9 +18,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
+import com.example.qlnv.OnClickListener;
 import com.example.qlnv.R;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
 import com.example.qlnv.adapter.AdapterTask;
+
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
 import com.example.qlnv.model.Task;
@@ -48,6 +51,14 @@ public class TaskActivity extends AppCompatActivity {
         employee = Injector.getEmployee();
         tasks.add(new Task("abcd","abcd","acbd","abcd","abcd",new Date(),new Date()));
         adapterTask = new AdapterTask(tasks, TaskActivity.this);
+        adapterTask.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onItemLongClick(String id) {
+                Intent i = new Intent(TaskActivity.this,UpdateStatusTaskActivity.class);
+                i.putExtra("idTask",id);
+                startActivity(i);
+            }
+        });
         rvTask.setAdapter(adapterTask);
         rvTask.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
         getTaskOfUser(employee);

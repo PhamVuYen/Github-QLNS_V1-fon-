@@ -17,12 +17,12 @@ import com.example.qlnv.model.Task;
 
 import java.util.ArrayList;
 
-public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
+public class AdapterAllTask extends RecyclerView.Adapter<AdapterAllTask.ViewHolder> {
     ArrayList<Task> tasks;
     Context context;
     OnClickListener onClickListener;
 
-    public AdapterTask(ArrayList<Task> tasks, Context context) {
+    public AdapterAllTask(ArrayList<Task> tasks, Context context) {
         this.tasks = tasks;
         this.context = context;
     }
@@ -35,10 +35,12 @@ public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View heroView = inflater.inflate(R.layout.task_layout, parent, false);
+        View heroView = inflater.inflate(R.layout.all_task_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(heroView);
         return viewHolder;
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -46,6 +48,7 @@ public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
         holder.tvName.setText(task.getTask_name());
         holder.tvDeadLine.setText(Injector.datetoStringTime(task.getDeadline()));
         holder.tvStatus.setText(task.getTask_status());
+        holder.tvAssignFor.setText(task.getUser_id());
         holder.layoutTask.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -61,7 +64,7 @@ public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvName,tvDeadLine,tvStatus;
+        private TextView tvName,tvDeadLine,tvStatus,tvAssignFor;
         private LinearLayout layoutTask;
 
         public ViewHolder(@NonNull View itemView) {
@@ -70,6 +73,7 @@ public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
             tvName = itemView.findViewById(R.id.task_name);
             tvDeadLine = itemView.findViewById(R.id.tvDeadline);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvAssignFor = itemView.findViewById(R.id.tvAssignFor);
         }
     }
 }
