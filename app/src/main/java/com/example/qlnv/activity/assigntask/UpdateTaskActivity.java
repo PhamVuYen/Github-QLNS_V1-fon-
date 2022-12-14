@@ -1,18 +1,12 @@
 package com.example.qlnv.activity.assigntask;
 
-import static java.sql.Types.NULL;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,63 +28,67 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
 import com.example.qlnv.R;
-import com.example.qlnv.activity.HomeActivity;
-import com.example.qlnv.activity.manageuser.AddEmployeeActivity;
-import com.example.qlnv.activity.manageuser.ManageUserActivity;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
 import com.example.qlnv.model.Task;
 
-import org.json.JSONObject;
-
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
-public class AssignTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-
+public class UpdateTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private EditText edtTaskName;
     private Button task_assigned_btn;
     public String task_id_unique;
     private TextView tvHourEnd, tvDateEnd;
-    private Spinner spinner;
+    private Spinner spinnerName, spinnerStatus;
+    private ArrayList<Employee> arrayList = new ArrayList<>();
+    private ArrayAdapter<String> nameAdapter;
+    private ArrayList<String> items = new ArrayList<>();
+    private Task task;
     private String[] separated = new String[2];
     private Employee employee = null;
-    private Room room = null;
-    private ArrayList<Employee> arrayList = new ArrayList<>();
+    private int position = 0;
     private String ID = "";
-    ArrayAdapter<String> adapter;
-
-    ArrayList<String> items = new ArrayList<>();
+    private String idTask = "";
+    private String status = "";
+    private String deadline = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assign_task);
-        edtTaskName = findViewById(R.id.task_assigned_name);
-        task_assigned_btn = findViewById(R.id.task_assigned_btn);
-        tvHourEnd = findViewById(R.id.tvHourEnd);
-        tvDateEnd = findViewById(R.id.tvDateEnd);
-        spinner = findViewById(R.id.spinner1);
+        setContentView(R.layout.activity_update_task);
+        initView();
 
         employee = Injector.getEmployee();
         ID = employee.getId();
-        items.clear();
-        arrayList.clear();
+
+
+//        Intent i = getIntent();
+//        Bundle b = i.getBundleExtra("DATA");
+//        task = b.getSerializable()
+        edtTaskName.setText(getIntent().getStringExtra("taskname"));
+        position = getIntent().getIntExtra("position", 0);
+        String deadline = getIntent().getStringExtra("deadline");
+        idTask = getIntent().getStringExtra("idTask");
+
+
+
+        String[] time  = deadline.split(" ",-1);
+        tvDateEnd.setText(time[0]);
+        tvHourEnd.setText(time[1]);
+
+
         arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
+
+
         task_id_unique = UUID.randomUUID().toString();
         task_assigned_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateTask();
+                updateTask(idTask);
             }
         });
 
@@ -101,7 +99,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                 int minute = calendar.get(Calendar.MINUTE);
                 TimePickerDialog timePicker = new TimePickerDialog(
-                        AssignTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        UpdateTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         tvHourEnd.setText(hourOfDay + ":" + minute);
@@ -115,8 +113,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             @Override
             public void onClick(View v) {
                 DatePickerDialog dialog = new DatePickerDialog(
-                        AssignTaskActivity.this,
-                        AssignTaskActivity.this,
+                        UpdateTaskActivity.this,
+                        UpdateTaskActivity.this,
                         Calendar.getInstance().get(Calendar.YEAR),
                         Calendar.getInstance().get(Calendar.MONTH),
                         Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -132,11 +130,11 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             }
         }
 
-        items = getDataSpinner();
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        nameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        spinnerName.setAdapter(nameAdapter);
+        spinnerName.setSelection(position);
+        spinnerName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = (String) parent.getItemAtPosition(pos);
                 separated = ((String) item).split("-");
@@ -145,52 +143,46 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
 
-
-    private void updateTask() {
-        if (edtTaskName.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Task name can't be empty", Toast.LENGTH_SHORT).show();
-        } else {
-            if (tvDateEnd.getText().toString().isEmpty() || tvHourEnd.getText().toString().isEmpty()) {
-                Toast.makeText(this, "You must select time end task", Toast.LENGTH_SHORT).show();
-            } else {
-                String time = tvDateEnd.getText().toString() + " " + tvHourEnd.getText().toString();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date deadline = null;
-                try {
-                    deadline = df.parse(time);
-                    Log.d("item", deadline + "||" + new Date());
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                Task task = new Task();
-                task.setTask_id(task_id_unique);
-                task.setTask_name(edtTaskName.getText().toString());
-                task.setManage_id(Injector.getEmployee().getId());
-                task.setCreateDay(Injector.dateToString(new Date()));
-                task.setDeadline(time);
-                task.setUser_id(separated[1]);
-                task.setTask_status("Chưa xong");
-                addTaskToDB(task);
+        ArrayList<String> itemStatus = new ArrayList<>();
+        itemStatus.add("Đang làm");
+        itemStatus.add("Đã hoàn thành");
+        itemStatus.add("Quá hạn");
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemStatus);
+        spinnerStatus.setAdapter(statusAdapter);
+        spinnerStatus.setSelection(position);
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = (String) parent.getItemAtPosition(pos);
+                status = (String) item;
             }
 
-        }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
-    private void addTaskToDB(Task task) {
+    private void initView() {
+        edtTaskName = findViewById(R.id.task_assigned_name);
+        task_assigned_btn = findViewById(R.id.task_assigned_btn);
+        tvHourEnd = findViewById(R.id.tvHourEnd);
+        tvDateEnd = findViewById(R.id.tvDateEnd);
+        spinnerName = findViewById(R.id.spinner1);
+        spinnerStatus = findViewById(R.id.spinner2);
+    }
+
+
+    private void updateTask(String idTask) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ASSIGN_TASK, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_UPDATE_TASK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
                     try {
                         Log.d("response", response);
-                        Toast.makeText(AssignTaskActivity.this, "Task assigned successfully", Toast.LENGTH_SHORT).show();
                         finish();
                     } catch (Exception e) {
-
+//                        Toast.makeText(UpdateTaskActivity.this, "Some error", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -204,13 +196,12 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("MaCViec", task.getTask_id());
-                param.put("TenCViec", task.getTask_name());
-                param.put("DealineCV", task.getDeadline());
-                param.put("CreateDate", task.getCreateDay());
-                param.put("MaNV", task.getUser_id());
-                param.put("Status", task.getTask_status());
-                param.put("CreateBy", ID);
+                String deadline = tvDateEnd.getText().toString() + " " + tvHourEnd.getText().toString();
+                param.put("MaCViec", idTask);
+                param.put("TenCViec", edtTaskName.getText().toString());
+                param.put("Status", status);
+                param.put("MaNV", separated[1]);
+                param.put("DealineCV", deadline);
                 return param;
             }
         };
@@ -218,21 +209,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        tvDateEnd.setText(dayOfMonth + "/" + month + "/" + year);
-    }
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-    public ArrayList<String> getDataSpinner() {
-        HashSet<String> hashSet = new HashSet<String>();
-        hashSet.addAll(items);
-        items.clear();
-        items.addAll(hashSet);
-        return items;
-    }
-
-    @Override
-    public void onBackPressed() {
-        items.clear();
-        super.onBackPressed();
     }
 }

@@ -49,7 +49,6 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         initView();
         employee = Injector.getEmployee();
-        tasks.add(new Task("abcd","abcd","acbd","abcd","abcd",new Date(),new Date()));
         adapterTask = new AdapterTask(tasks, TaskActivity.this);
         adapterTask.setOnClickListener(new OnClickListener() {
             @Override
@@ -61,9 +60,15 @@ public class TaskActivity extends AppCompatActivity {
         });
         rvTask.setAdapter(adapterTask);
         rvTask.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
-        getTaskOfUser(employee);
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapterTask.tasks.clear();
+        getTaskOfUser(employee);
+    }
 
     void initView() {
         rvTask = findViewById(R.id.rv_task);
@@ -83,9 +88,9 @@ public class TaskActivity extends AppCompatActivity {
                             String TenCViec = jsonObject.getString("TenCViec");
                             String MaCViec = jsonObject.getString("MaCViec");
                             String userid = jsonObject.getString("MaNV");
-//                        Date DealineCV = (Date) jsonObject.get("DealineCV");
+                            String DealineCV = jsonObject.getString("DealineCV");
                             String Status = jsonObject.getString("Status");
-                            tasks.add(new Task(userid,MaCViec,TenCViec,Status,"abcd",new Date(),new Date()));
+                            tasks.add(new Task(userid,MaCViec,TenCViec,Status,"abch",DealineCV,DealineCV));
                             adapterTask.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {

@@ -18,7 +18,7 @@ import com.example.qlnv.model.Task;
 import java.util.ArrayList;
 
 public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
-    ArrayList<Task> tasks;
+    public ArrayList<Task> tasks;
     Context context;
     OnClickListener onClickListener;
 
@@ -44,7 +44,7 @@ public class AdapterTask extends RecyclerView.Adapter<AdapterTask.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.tvName.setText(task.getTask_name());
-        holder.tvDeadLine.setText(Injector.datetoStringTime(task.getDeadline()));
+        holder.tvDeadLine.setText(task.getDeadline());
         holder.tvStatus.setText(task.getTask_status());
         holder.layoutTask.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
