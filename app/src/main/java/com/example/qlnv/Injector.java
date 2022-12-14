@@ -35,6 +35,11 @@ public class Injector {
     public static String URL_UPDATE_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/editJob.php";
     public static String URL_DELETE_TASK = "http://" + IP +":8080/QLNS_V1/Jobs/delJob.php";
 
+    public static String URL_QUERY_CHAMCONG = "http://" + IP +":8080/QLNS_V1/TimeRecorder/getChamCong.php";
+    public static String URL_ADD_CHAMCONG= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addChamCong.php";
+
+
+
 
 
     public static Employee getEmployee() {
