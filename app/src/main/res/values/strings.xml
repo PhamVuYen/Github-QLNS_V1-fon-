@@ -39,4 +39,6 @@
     <string name="timekeepingSuccess">Timekeeping is successfully</string>
     <string name="finish">Finish</string>
     <string name="success">Timekeeping</string>
+    <string name="checkin">You have successfully checked in</string>
+    <string name="checkout">You have successfully checked out</string>
 </resources>

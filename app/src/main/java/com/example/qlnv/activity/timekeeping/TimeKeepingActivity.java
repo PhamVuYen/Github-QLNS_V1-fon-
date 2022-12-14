@@ -30,13 +30,19 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.qlnv.Injector;
+import com.example.qlnv.Preference;
 import com.example.qlnv.R;
+import com.example.qlnv.activity.HomeActivity;
 import com.example.qlnv.model.TimeKeeping;
+import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,11 +72,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (!result.toString().isEmpty()) {
-                                Intent intent = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
-                                TimeKeeping timeKeeping = new TimeKeeping();
-                                timeKeeping.setIdNv(Injector.getEmployee().getId());
-//                                timeKeeping.set
-                                startActivity(intent);
+                                queryTimeKeeping();
                             }
                         }
                     });
@@ -82,11 +84,22 @@ public class TimeKeepingActivity extends AppCompatActivity {
 
     void queryTimeKeeping() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_UPDATE_STATUS_TASK, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_CHECK_CHAMCONGNGAY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
                     try {
+                        Log.d("responseALl",response);
+                        JSONArray jsonArray = new JSONArray(response);
+//                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+//                        String timeCheckIn = jsonObject.getString("GioDen");
+                        if (jsonArray.length() > 0) {
+                            addCheckOut();
+                            Preference preferences = Preference.getInstance(TimeKeepingActivity.this);
+                            preferences.saveTime();
+                        } else {
+                            addCheckIn();
+                        }
                         Log.d("response",response);
                     } catch (Exception e) {
                         Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
@@ -104,7 +117,78 @@ public class TimeKeepingActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
                 param.put("MaNV",Injector.getEmployee().getId());
-                param.put("Day",Injector.getCurrentDay());
+                param.put("Ngay",Injector.getCurrentDay());
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void addCheckIn() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_CHECKIN_CHAMCONG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseCheckIn",response);
+                        Intent i = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
+                        i.putExtra("timekeeping",getResources().getString(R.string.checkin));
+                        startActivity(i);
+                    } catch (Exception e) {
+                        Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err",error+"");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV",Injector.getEmployee().getId());
+                param.put("Ngay",Injector.getCurrentDay());
+                param.put("GioDen",Injector.getCurrentTime());
+                param.put("Thang", String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void addCheckOut() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_CHECHKOUT_CHAMCONG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseCheckOut",response);
+                        Intent i = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
+                        i.putExtra("timekeeping",getResources().getString(R.string.checkout));
+                        startActivity(i);
+                    } catch (Exception e) {
+                        Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err",error+"");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV",Injector.getEmployee().getId());
+                param.put("Ngay",Injector.getCurrentDay());
+                param.put("GioVe",Injector.getCurrentTime());
                 return param;
             }
         };

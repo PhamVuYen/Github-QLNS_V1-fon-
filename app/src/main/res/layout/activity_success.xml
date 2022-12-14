@@ -22,6 +22,7 @@
         android:layout_height="300dp"/>
 
     <TextView
+        android:id="@+id/tvTittle"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textColor="@color/black"
