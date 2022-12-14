@@ -1,6 +1,7 @@
 package com.example.qlnv.activity.timekeeping;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +15,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
@@ -27,6 +37,8 @@ import com.google.zxing.Result;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TimeKeepingActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
@@ -57,7 +69,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
                                 Intent intent = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
                                 TimeKeeping timeKeeping = new TimeKeeping();
                                 timeKeeping.setIdNv(Injector.getEmployee().getId());
-
+//                                timeKeeping.set
                                 startActivity(intent);
                             }
                         }
@@ -67,6 +79,38 @@ public class TimeKeepingActivity extends AppCompatActivity {
             });
         }
     }
+
+    void queryTimeKeeping() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_UPDATE_STATUS_TASK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("response",response);
+                    } catch (Exception e) {
+                        Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err",error+"");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV",Injector.getEmployee().getId());
+                param.put("Day",Injector.getCurrentDay());
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     private void askPermission() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

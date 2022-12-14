@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,5 +40,10 @@ public class ExampleUnitTest {
 //        Date date1 = sdf.parse("2020-07-20");
 //        Date date2 = sdf.parse("2020-06-18");
 //        Log.d("compare",date1.compareTo(date2) +"");
+        Date now = new Date(System.currentTimeMillis());
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+        String strDate = dateFormat.format(now);
+        Log.d("now",strDate+"");
     }
 }

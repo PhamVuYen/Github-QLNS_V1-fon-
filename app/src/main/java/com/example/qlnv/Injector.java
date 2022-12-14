@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
+import com.example.qlnv.model.TimeKeeping;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +15,7 @@ import java.util.Date;
 
 public class Injector {
     public static Employee employee;
+    public static TimeKeeping timeKeeping;
     public static String IP = "192.168.252.149";
     public static String URL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP + ":80/QLNS_V1/Staffs/getStaffsRoom.php";
@@ -45,6 +47,13 @@ public class Injector {
         return employee;
     }
 
+    public static TimeKeeping getTimeKeeping() {
+        if (timeKeeping == null) {
+            timeKeeping = new TimeKeeping();
+        }
+        return timeKeeping;
+    }
+
     public static String dateToString(Date date) {
         String dateToStr = date.toInstant()
                 .atOffset(ZoneOffset.UTC)
@@ -63,8 +72,26 @@ public class Injector {
         SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         Date dateTime = sf.parse(time);
         Date now = new Date(System.currentTimeMillis()); // 2016-03-10 22:06:10
-
+        Log.d("now",now+"");
         return dateTime.compareTo(now);
+    }
+
+    public static String getCurrentDate() {
+        Date now = new Date(System.currentTimeMillis());
+        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+        String strDate = dateFormat.format(now);
+        return strDate;
+    }
+
+    public static String getCurrentTime() {
+        String date = getCurrentDate();
+        String[] dateTime = date.split(" ");
+        return dateTime[1];
+    }
+    public static String getCurrentDay() {
+        String date = getCurrentDate();
+        String[] dateTime = date.split(" ");
+        return dateTime[0];
     }
 
 
