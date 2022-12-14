@@ -4,15 +4,17 @@ public class TimeKeeping {
     String idNv;
     String checkIn;
     String checkOut;
+    String month;
     String day;
 
     public TimeKeeping() {
     }
 
-    public TimeKeeping(String idNv, String checkIn, String checkOut, String day) {
+    public TimeKeeping(String idNv, String checkIn, String checkOut, String month, String day) {
         this.idNv = idNv;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        this.month = month;
         this.day = day;
     }
 
@@ -38,6 +40,14 @@ public class TimeKeeping {
 
     public void setCheckOut(String checkOut) {
         this.checkOut = checkOut;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String day) {
+        this.month = day;
     }
 
     public String getDay() {
