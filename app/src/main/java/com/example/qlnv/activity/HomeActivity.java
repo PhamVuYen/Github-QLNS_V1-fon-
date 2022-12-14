@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -28,9 +29,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
 import com.example.qlnv.R;
 import com.example.qlnv.activity.account.AccountActivity;
+import com.example.qlnv.activity.assigntask.AllTaskActivity;
 import com.example.qlnv.activity.assigntask.AssignTaskActivity;
 import com.example.qlnv.activity.assigntask.TaskActivity;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
+import com.example.qlnv.activity.summary.SummaryActivity;
+import com.example.qlnv.activity.timekeeping.TimeKeepingActivity;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Role;
 
@@ -42,11 +46,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
-    ConstraintLayout timeKeeping, manageUser, assignTask, myTask, account, summary;
-    TextView tvUserName,tvRole;
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+    ConstraintLayout timeKeeping, manageUser, assignTask, myTask, account, viewAllTask,summary;
+    TextView tvUserName, tvRole;
     Employee employee;
     private ArrayList<Employee> arrayList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +62,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         assignTask.setOnClickListener(this);
         myTask.setOnClickListener(this);
         account.setOnClickListener(this);
+        viewAllTask.setOnClickListener(this);
         summary.setOnClickListener(this);
         employee = Injector.getEmployee();
-        tvUserName.setText(employee.getName() +"-"+employee.getId());
+        tvUserName.setText(employee.getName() + "-" + employee.getId());
         tvRole.setText(employee.getRole());
     }
 
@@ -76,7 +82,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         myTask = findViewById(R.id.mytask);
         account = findViewById(R.id.account);
         summary = findViewById(R.id.summary);
-        tvUserName = findViewById(R.id.textView2);
+        viewAllTask = findViewById(R.id.viewAllTask);
+        tvUserName = findViewById(R.id.tvUsernameHome);
         tvRole = findViewById(R.id.tvRole);
     }
 
@@ -85,6 +92,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
         switch (id) {
             case R.id.timekeeping:
+                startActivity(new Intent(HomeActivity.this, TimeKeepingActivity.class));
                 break;
             case R.id.manageuser:
                 if (employee.getRole().equals("ADMIN")) {
@@ -97,7 +105,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (!employee.getRole().equals("ADMIN")) {
                     if (arrayList.size() > 0) {
                         Intent intent = new Intent(HomeActivity.this, AssignTaskActivity.class);
-                        intent.putExtra("listuser",arrayList);
+                        intent.putExtra("listuser", arrayList);
                         startActivity(intent);
                     }
                 } else {
@@ -110,18 +118,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.account:
                 startActivity(new Intent(HomeActivity.this, AccountActivity.class));
                 break;
-            case R.id.summary:
-                Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePicker = new TimePickerDialog(
-                        HomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.d("hour",hourOfDay + ":" + minute);
+            case R.id.viewAllTask:
+                if (employee.getRole().equals("Trưởng phòng")) {
+                    if (arrayList.size() > 0) {
+                        Intent intent = new Intent(HomeActivity.this, AllTaskActivity.class);
+                        intent.putExtra("id", employee.getId());
+                        intent.putExtra("listuser", arrayList);
+                        startActivity(intent);
                     }
-                },hour,minute,true);
-                timePicker.show();
+                } else {
+                    Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.summary:
+                startActivity(new Intent(HomeActivity.this, SummaryActivity.class));
                 break;
         }
     }
@@ -141,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (response != null) {
                     try {
                         JSONObject jsonObject1 = new JSONObject(response);
-                        for (int i = 0 ; i < jsonObject1.length() ; i++) {
+                        for (int i = 0; i < jsonObject1.length(); i++) {
                             JSONObject jsonObject = jsonObject1.getJSONObject(String.valueOf(i));
                             String mnv = jsonObject.getString("MaNV");
                             String name = jsonObject.getString("TenNV");
@@ -150,7 +160,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             employee.setName(name);
                             arrayList.add(employee);
                         }
-                    Log.d("responseUser",response);
+                        Log.d("responseUser", response);
                     } catch (Exception e) {
 //                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();
                     }
@@ -159,7 +169,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this,error+"",Toast.LENGTH_LONG).show();
+                Toast.makeText(HomeActivity.this, error + "", Toast.LENGTH_LONG).show();
             }
         }) {
             @Nullable

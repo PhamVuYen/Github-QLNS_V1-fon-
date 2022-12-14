@@ -3,6 +3,8 @@ package com.example.qlnv.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.android.material.internal.ParcelableSparseArray;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -13,11 +15,11 @@ public class Task implements Serializable {
     @NotNull
     private String task_id;
     private String user_id, task_name, task_status,manage_id;
-    private Date createDay, deadline;
+    private String createDay, deadline;
     public Task() {
     }
 
-    public Task(String user_id, @NotNull String task_id, String task_name, String task_status, String manage_id, Date createDay, Date deadline) {
+    public Task(String user_id, @NotNull String task_id, String task_name, String task_status, String manage_id, String createDay, String deadline) {
         this.user_id = user_id;
         this.task_id = task_id;
         this.task_name = task_name;
@@ -67,19 +69,19 @@ public class Task implements Serializable {
         this.user_id = user_id;
     }
 
-    public Date getCreateDay() {
+    public String getCreateDay() {
         return createDay;
     }
 
-    public void setCreateDay(Date createDay) {
+    public void setCreateDay(String createDay) {
         this.createDay = createDay;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 }

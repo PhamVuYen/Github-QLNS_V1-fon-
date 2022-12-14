@@ -19,12 +19,12 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="menu">Menu</string>
-    <string name="start_quiz">TimeKeeping</string>
+    <string name="start_quiz">Time keeping</string>
     <string name="assigntask">Assign task</string>
     <string name="mytask">My task</string>
     <string name="edit_password">Change password</string>
     <string name="logout">Log out</string>
-    <string name="manage_user">Manage User</string>
+    <string name="manage_user">Manage user</string>
     <string name="account">Account</string>
     <string name="summary">Summary</string>
     <string name="autologin">Auto login</string>
@@ -35,4 +35,8 @@
     <string name="save_password">Save password</string>
     <string name="add_user">Thêm nhân viên</string>
     <string name="edit_user">Sửa thông tin nhân viên</string>
+    <string name="view_all_task">All task</string>
+    <string name="timekeepingSuccess">Timekeeping is successfully</string>
+    <string name="finish">Finish</string>
+    <string name="success">Timekeeping</string>
 </resources>
