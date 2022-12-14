@@ -26,20 +26,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SuccessActivity extends AppCompatActivity {
-    TextView btnFinish;
+    TextView btnFinish,tvTittle;
     String idEmployee = "";
+    String tittle = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
         initView();
+        tittle = getIntent().getStringExtra("timekeeping");
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SuccessActivity.this, HomeActivity.class));
             }
         });
-        idEmployee = Injector.getEmployee().getId();
+        tvTittle.setText(tittle);
     }
 
     @Override
@@ -47,37 +49,9 @@ public class SuccessActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    public void updateTimekeeping() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_UPDATE_STATUS_TASK, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response != null) {
-                    try {
-                        Log.d("response",response);
-                    } catch (Exception e) {
-                        Toast.makeText(SuccessActivity.this, "Some error", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
-            }
-        }) {
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> param = new HashMap<>();
-                param.put("MaNV",idEmployee);
-                return param;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
 
     private void initView() {
         btnFinish = findViewById(R.id.btnFinish);
+        tvTittle = findViewById(R.id.tvTittle);
     }
 }

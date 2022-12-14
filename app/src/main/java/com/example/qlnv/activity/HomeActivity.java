@@ -7,7 +7,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.accounts.Account;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
+import com.example.qlnv.Preference;
 import com.example.qlnv.R;
 import com.example.qlnv.activity.account.AccountActivity;
 import com.example.qlnv.activity.assigntask.AllTaskActivity;
@@ -45,12 +48,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ConstraintLayout timeKeeping, manageUser, assignTask, myTask, account, viewAllTask,summary;
     TextView tvUserName, tvRole;
     Employee employee;
     private ArrayList<Employee> arrayList = new ArrayList<>();
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         employee = Injector.getEmployee();
         tvUserName.setText(employee.getName() + "-" + employee.getId());
         tvRole.setText(employee.getRole());
+        sharedPref = HomeActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong("mTime", System.currentTimeMillis()).apply();
     }
 
     @Override
@@ -92,7 +100,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
         switch (id) {
             case R.id.timekeeping:
-                startActivity(new Intent(HomeActivity.this, TimeKeepingActivity.class));
+                Preference preferences = Preference.getInstance(HomeActivity.this);
+                if (!preferences.isTimeToClick()&&preferences.getIDUser().equals(Injector.getEmployee().getId())) {
+                    Toast.makeText(HomeActivity.this, "You have checked out", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(HomeActivity.this, TimeKeepingActivity.class));
+                }
                 break;
             case R.id.manageuser:
                 if (employee.getRole().equals("ADMIN")) {
