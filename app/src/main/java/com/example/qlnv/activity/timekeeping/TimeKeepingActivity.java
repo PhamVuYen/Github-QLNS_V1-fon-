@@ -56,7 +56,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_time_keeping);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
-        askPermission();
+       askPermission();
         if (CameraPermission) {
             scannerView.setOnClickListener(new View.OnClickListener() {
                 @Override
