@@ -50,6 +50,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     boolean CameraPermission = false;
     final int CAMERA_PERM = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != null) {
                     try {
-                        Log.d("responseALl",response);
+                        Log.d("responseALl", response);
                         JSONArray jsonArray = new JSONArray(response);
 //                        JSONObject jsonObject = jsonArray.getJSONObject(0);
 //                        String timeCheckIn = jsonObject.getString("GioDen");
@@ -100,7 +101,7 @@ public class TimeKeepingActivity extends AppCompatActivity {
                         } else {
                             addCheckIn();
                         }
-                        Log.d("response",response);
+                        Log.d("response", response);
                     } catch (Exception e) {
                         Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
                     }
@@ -109,15 +110,15 @@ public class TimeKeepingActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
+                Log.d("err", error + "");
             }
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("MaNV",Injector.getEmployee().getId());
-                param.put("Ngay",Injector.getCurrentDay());
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Ngay", Injector.getCurrentDay());
                 return param;
             }
         };
@@ -131,10 +132,11 @@ public class TimeKeepingActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != null) {
                     try {
-                        Log.d("responseCheckIn",response);
+                        Log.d("responseCheckIn", response);
                         Intent i = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
-                        i.putExtra("timekeeping",getResources().getString(R.string.checkin));
+                        i.putExtra("timekeeping", getResources().getString(R.string.checkin));
                         startActivity(i);
+//                        getTimeKeeping();
                     } catch (Exception e) {
                         Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
                     }
@@ -143,22 +145,23 @@ public class TimeKeepingActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
+                Log.d("err", error + "");
             }
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("MaNV",Injector.getEmployee().getId());
-                param.put("Ngay",Injector.getCurrentDay());
-                param.put("GioDen",Injector.getCurrentTime());
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Ngay", Injector.getCurrentDay());
+                param.put("GioDen", Injector.getCurrentTime());
                 param.put("Thang", String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
                 return param;
             }
         };
         requestQueue.add(stringRequest);
     }
+
 
     public void addCheckOut() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -167,9 +170,9 @@ public class TimeKeepingActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != null) {
                     try {
-                        Log.d("responseCheckOut",response);
+                        Log.d("responseCheckOut", response);
                         Intent i = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
-                        i.putExtra("timekeeping",getResources().getString(R.string.checkout));
+                        i.putExtra("timekeeping", getResources().getString(R.string.checkout));
                         startActivity(i);
                     } catch (Exception e) {
                         Toast.makeText(TimeKeepingActivity.this, "Some error", Toast.LENGTH_LONG).show();
@@ -179,16 +182,16 @@ public class TimeKeepingActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
+                Log.d("err", error + "");
             }
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("MaNV",Injector.getEmployee().getId());
-                param.put("Ngay",Injector.getCurrentDay());
-                param.put("GioVe",Injector.getCurrentTime());
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Ngay", Injector.getCurrentDay());
+                param.put("GioVe", Injector.getCurrentTime());
                 return param;
             }
         };
