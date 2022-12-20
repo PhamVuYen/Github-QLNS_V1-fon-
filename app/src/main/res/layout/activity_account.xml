@@ -219,8 +219,22 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/btnAbsent"
+                android:textSize="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/black"
+                android:background="@drawable/round_btn_change_password"
+                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:layout_height="wrap_content"
+                android:text="@string/absent" />
+
+            <TextView
                 android:id="@+id/btnChangePassword"
                 android:textSize="18dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:textColor="@color/black"

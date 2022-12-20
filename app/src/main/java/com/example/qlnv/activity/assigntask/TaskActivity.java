@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,20 +19,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
 import com.example.qlnv.OnClickListener;
 import com.example.qlnv.R;
-import com.example.qlnv.activity.manageuser.ManageUserActivity;
-import com.example.qlnv.adapter.AdapterTask;
+import com.example.qlnv.adapter.TaskAdapter;
 
 import com.example.qlnv.model.Employee;
-import com.example.qlnv.model.Room;
 import com.example.qlnv.model.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +35,7 @@ public class TaskActivity extends AppCompatActivity {
     RecyclerView rvTask;
     Employee employee;
     ArrayList<Task> tasks = new ArrayList<>();
-    AdapterTask adapterTask;
+    TaskAdapter adapterTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +43,7 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         initView();
         employee = Injector.getEmployee();
-        adapterTask = new AdapterTask(tasks, TaskActivity.this);
+        adapterTask = new TaskAdapter(tasks, TaskActivity.this);
         adapterTask.setOnClickListener(new OnClickListener() {
             @Override
             public void onItemLongClick(String id) {

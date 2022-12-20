@@ -13,7 +13,7 @@ import com.example.qlnv.activity.LoginActivity;
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView tvChangePassword,tvLogout;
+    TextView tvChangePassword,tvLogout,tvAbsent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +21,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_account);
         tvChangePassword = findViewById(R.id.btnChangePassword);
         tvLogout = findViewById(R.id.btnLogOut);
+        tvAbsent = findViewById(R.id.btnAbsent);
         tvChangePassword.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
-
+        tvAbsent.setOnClickListener(this);
     }
 
     @Override
@@ -35,6 +36,9 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnLogOut:
                 startActivity(new Intent(AccountActivity.this,LoginActivity.class));
+                break;
+            case R.id.btnAbsent:
+                startActivity(new Intent(AccountActivity.this,AbsentActivity.class));
                 break;
         }
     }

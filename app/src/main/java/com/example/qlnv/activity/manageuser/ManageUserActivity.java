@@ -104,7 +104,6 @@ public class ManageUserActivity extends Activity {
                             //room.dsnv
                             arrRoom.add(room);
                             getUserInRoom(room);
-//                            adapterPb.notifyDataSetChanged();
                         } catch (Exception e) {
                             Toast.makeText(ManageUserActivity.this, "Some error", Toast.LENGTH_LONG).show();
                         }
@@ -115,7 +114,6 @@ public class ManageUserActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("error",error+"");
-                Toast.makeText(ManageUserActivity.this, error + "Can't connect server employee", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -154,7 +152,6 @@ public class ManageUserActivity extends Activity {
                         }
 
                     } catch (Exception e) {
-                        Toast.makeText(ManageUserActivity.this, "Fail to connect server employee in room", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -170,11 +167,9 @@ public class ManageUserActivity extends Activity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
                 param.put("MaPB", room.getId());
-                Log.d("MaPB",param.size()+"");
                 return param;
             }
         };
-
         requestQueue.add(stringRequest);
     }
 
@@ -232,7 +227,6 @@ public class ManageUserActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("error",error+"");
-                Toast.makeText(ManageUserActivity.this, error + "Can't connect server employee", Toast.LENGTH_LONG).show();
             }
         }){
             @Nullable
