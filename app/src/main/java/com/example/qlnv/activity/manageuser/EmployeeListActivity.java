@@ -2,6 +2,7 @@ package com.example.qlnv.activity.manageuser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 
@@ -77,6 +78,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         txtmsg.setText( "Phòng: " + pb.getName() );
         Log.d("idPhong",pb.getId());
     }
+
 
     public void addEvents() {
         btnback.setOnClickListener(new OnClickListener() {

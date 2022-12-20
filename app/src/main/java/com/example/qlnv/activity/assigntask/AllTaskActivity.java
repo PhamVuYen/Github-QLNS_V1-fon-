@@ -3,8 +3,6 @@ package com.example.qlnv.activity.assigntask;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,21 +20,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.qlnv.Injector;
-import com.example.qlnv.OnClickListener;
 import com.example.qlnv.OnClickListenerAllTask;
 import com.example.qlnv.R;
-import com.example.qlnv.activity.HomeActivity;
-import com.example.qlnv.activity.manageuser.EditEmployeeActivity;
-import com.example.qlnv.activity.manageuser.ManageUserActivity;
-import com.example.qlnv.adapter.AdapterAllTask;
-import com.example.qlnv.adapter.AdapterTask;
+import com.example.qlnv.adapter.AllTaskAdapter;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Task;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +37,7 @@ public class AllTaskActivity extends AppCompatActivity {
     RecyclerView rvTask;
     Button btnAssignTask;
     ArrayList<Task> tasks = new ArrayList<>();
-    AdapterAllTask adapterAllTask;
+    AllTaskAdapter adapterAllTask;
     ArrayList<Employee> arrayList = new ArrayList<>();
     String id = "";
     int position = -1;
@@ -57,7 +49,7 @@ public class AllTaskActivity extends AppCompatActivity {
         initView();
         id = getIntent().getStringExtra("id");
         arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
-        adapterAllTask = new AdapterAllTask(tasks, AllTaskActivity.this);
+        adapterAllTask = new AllTaskAdapter(tasks, AllTaskActivity.this);
         adapterAllTask.setOnClickListener(new OnClickListenerAllTask() {
             @Override
             public void onItemLongClick(int id, int position, Task task) {
