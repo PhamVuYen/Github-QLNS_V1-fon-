@@ -40,10 +40,16 @@ public class ExampleUnitTest {
 //        Date date1 = sdf.parse("2020-07-20");
 //        Date date2 = sdf.parse("2020-06-18");
 //        Log.d("compare",date1.compareTo(date2) +"");
-        Date now = new Date(System.currentTimeMillis());
+//        Date now = new Date(System.currentTimeMillis());
+//
+//        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+//        String strDate = dateFormat.format(now);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
-        String strDate = dateFormat.format(now);
-        Log.d("now",strDate+"");
+        DateFormat df = new java.text.SimpleDateFormat("hh:mm");
+        java.util.Date date1 = df.parse("18:40");
+        java.util.Date date2 = df.parse("19:05");
+        long diff = date2.getTime() - date1.getTime();
+        long rs = diff/(1000*60);
+        Log.d("now",rs +"");
     }
 }

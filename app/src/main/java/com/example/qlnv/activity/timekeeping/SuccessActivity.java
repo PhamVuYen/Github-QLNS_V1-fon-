@@ -22,6 +22,10 @@ import com.example.qlnv.R;
 import com.example.qlnv.activity.HomeActivity;
 import com.example.qlnv.activity.assigntask.UpdateStatusTaskActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +46,97 @@ public class SuccessActivity extends AppCompatActivity {
             }
         });
         tvTittle.setText(tittle);
+        getTimeKeeping();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
     }
+
+    public void getTimeKeeping() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_GET_TIME_RECORER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseGet", response);
+                        JSONArray jsonArray = new JSONArray(response);
+                        if (jsonArray.length() == 0) {
+                            updateTimeRecord("1", Injector.getLateTime(Injector.getCurrentTime()));
+                        } else {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String NgayCong = jsonObject.getString("NgayCong");
+                                String PhutDiMuon = jsonObject.getString("PhutDiMuon");
+                                String ngaycongCheck = "";
+                                if (tittle.equals(getResources().getString(R.string.checkin))) {
+                                    ngaycongCheck = String.valueOf(Integer.parseInt(NgayCong) + 1) ;
+                                } else {
+                                    ngaycongCheck = String.valueOf(Integer.parseInt(NgayCong));
+                                }
+                                Log.d("ngaycongCheck",ngaycongCheck);
+//                                updateTimeRecord(String.valueOf(ngaycongCheck),
+//                                        String.valueOf(Integer.parseInt(PhutDiMuon) + Integer.parseInt(Injector.getLateTime(Injector.getCurrentTime()))));
+                            }
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(SuccessActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Thang", String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    void updateTimeRecord(String workDay, String lateMinute) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ADD_TIME_RECORER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseUpdate", response);
+                    } catch (Exception e) {
+                        Toast.makeText(SuccessActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Thang", String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
+                param.put("NgayCong", workDay);
+                param.put("PhutDiMuon", lateMinute);
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
 
 
     private void initView() {
