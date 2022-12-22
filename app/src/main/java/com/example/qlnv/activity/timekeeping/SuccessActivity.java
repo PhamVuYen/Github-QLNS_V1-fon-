@@ -64,7 +64,7 @@ public class SuccessActivity extends AppCompatActivity {
                         Log.d("responseGet", response);
                         JSONArray jsonArray = new JSONArray(response);
                         if (jsonArray.length() == 0) {
-                          //  updateTimeRecord("1", Injector.getLateTime(Injector.getCurrentTime()));
+                            updateTimeRecord("1", Injector.getLateTime(Injector.getCurrentTime()));
                         } else {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);

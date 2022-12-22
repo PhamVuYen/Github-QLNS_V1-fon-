@@ -154,6 +154,7 @@ public class AllTaskActivity extends AppCompatActivity {
                             adapterAllTask.notifyDataSetChanged();
                         }
                     } catch (Exception e) {
+                        Log.e("err",e.getMessage());
                     }
                 }
             }

@@ -230,9 +230,10 @@ public class TimeKeepingActivity extends AppCompatActivity {
                                 if (!result.toString().isEmpty()) {
 //                                    byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
 //                                    byte[] decompress = java.util.Base64.getDecoder().decode(bytes);
-                                    Intent intent = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
+//                                    Intent intent = new Intent(TimeKeepingActivity.this, SuccessActivity.class);
 //                                    intent.putExtra("jsonQrCode", new String(decompress));
-                                    startActivity(intent);
+//                                    startActivity(intent);
+                                    queryTimeKeeping();
                                 }
                             }
                         });

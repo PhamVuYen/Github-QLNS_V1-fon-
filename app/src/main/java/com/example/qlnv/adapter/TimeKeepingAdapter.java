@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlnv.Injector;
 import com.example.qlnv.OnClickListener;
 import com.example.qlnv.R;
 import com.example.qlnv.model.Task;
@@ -17,12 +20,14 @@ import com.example.qlnv.model.TimeKeeping;
 
 import java.util.ArrayList;
 
-public class TimeKeepingAdapter extends RecyclerView.Adapter<TimeKeepingAdapter.ViewHolder> {
+public class TimeKeepingAdapter extends RecyclerView.Adapter<TimeKeepingAdapter.ViewHolder> implements Filterable {
     public ArrayList<TimeKeeping> list;
+    private ArrayList<TimeKeeping> listFiltered;
     Context context;
 
     public TimeKeepingAdapter(ArrayList<TimeKeeping> list, Context context) {
         this.list = list;
+        this.listFiltered = list;
         this.context = context;
     }
 
@@ -44,9 +49,48 @@ public class TimeKeepingAdapter extends RecyclerView.Adapter<TimeKeepingAdapter.
         holder.tvTimeLeave.setText(timeKeeping.getCheckOut());
     }
 
+    public void filterList(ArrayList<TimeKeeping> list) {
+        this.list.clear();
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    listFiltered = list;
+                } else {
+                    ArrayList<TimeKeeping> filteredList = new ArrayList<>();
+                    for (TimeKeeping t : list) {
+                        if (t.getIdNv().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(t);
+                        }
+                    }
+                    listFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = listFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                listFiltered = (ArrayList<TimeKeeping>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+
     @Override
     public int getItemCount() {
-        return list.size();
+        return listFiltered.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

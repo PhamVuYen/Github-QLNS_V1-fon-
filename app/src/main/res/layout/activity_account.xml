@@ -114,6 +114,7 @@
                     android:background="@android:color/darker_gray"/>
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/RL_dob"
@@ -219,6 +220,7 @@
             </RelativeLayout>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/btnAbsent"
                 android:textSize="18dp"
                 android:layout_marginTop="18dp"
