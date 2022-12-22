@@ -17,7 +17,7 @@ import java.util.Date;
 public class Injector {
     public static Employee employee;
     public static TimeKeeping timeKeeping;
-    public static String IP = "192.168.1.193";
+    public static String IP = "172.31.99.203";
     public static String URL_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaffsRoom.php";
     public static String URL_ADD_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/addStaff.php";
@@ -42,7 +42,11 @@ public class Injector {
     public static String URL_CHECK_CHAMCONGNGAY = "http://" + IP +":8080/QLNS_V1/TimeRecorder/CheckNgayChamCong.php";
     public static String URL_CHECKIN_CHAMCONG= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addChechIn.php";
     public static String URL_CHECHKOUT_CHAMCONG= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addChechOut.php";
-  //  public static String URL_ADD_CHAMCONG= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addChamCong.php";
+    public static String URL_GET_TIME_RECORER= "http://" + IP +":8080/QLNS_V1/TimeRecorder/getTimeRecorder.php";
+    public static String URL_ADD_TIME_RECORER= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addTimeRecord.php";
+    public static String URL_UPDATE_TIME_RECORER= "http://" + IP +":8080/QLNS_V1/TimeRecorder/editTimeRecord.php";
+
+    //  public static String URL_ADD_CHAMCONG= "http://" + IP +":8080/QLNS_V1/TimeRecorder/addChamCong.php";
 
 
 
