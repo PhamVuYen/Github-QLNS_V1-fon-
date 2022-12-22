@@ -39,7 +39,9 @@ import com.example.qlnv.activity.assigntask.TaskActivity;
 import com.example.qlnv.activity.manageuser.EmployeeListActivity;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
 import com.example.qlnv.activity.summary.SummaryActivity;
+import com.example.qlnv.activity.timekeeping.OverallActivity;
 import com.example.qlnv.activity.timekeeping.TimeKeepingActivity;
+import com.example.qlnv.activity.timekeeping.TimeKeepingDetailActivity;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Role;
 import com.example.qlnv.model.Room;
@@ -165,7 +167,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.summary:
-                startActivity(new Intent(HomeActivity.this, SummaryActivity.class));
+                if (Injector.getEmployee().getRole().equals("ADMIN")) {
+                    startActivity(new Intent(HomeActivity.this, TimeKeepingDetailActivity.class));
+                } else {
+                    startActivity(new Intent(HomeActivity.this, OverallActivity.class));
+                }
+
                 break;
         }
     }

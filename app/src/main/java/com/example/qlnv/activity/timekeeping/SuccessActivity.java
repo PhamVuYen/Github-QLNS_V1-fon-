@@ -30,9 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SuccessActivity extends AppCompatActivity {
-    TextView btnFinish,tvTittle;
+    TextView btnFinish, tvTittle;
     String idEmployee = "";
     String tittle = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,21 +65,22 @@ public class SuccessActivity extends AppCompatActivity {
                         Log.d("responseGet", response);
                         JSONArray jsonArray = new JSONArray(response);
                         if (jsonArray.length() == 0) {
-                            updateTimeRecord("1", Injector.getLateTime(Injector.getCurrentTime()));
+                            addTimeRecord("1", Injector.getLateTimeArrive(Injector.getCurrentTime()));
                         } else {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String NgayCong = jsonObject.getString("NgayCong");
                                 String PhutDiMuon = jsonObject.getString("PhutDiMuon");
-                                String ngaycongCheck = "";
-                                if (tittle.equals(getResources().getString(R.string.checkin))) {
-                                    ngaycongCheck = String.valueOf(Integer.parseInt(NgayCong) + 1) ;
+                                String workDay = "";
+                                String lateMinute = "";
+                                if (tittle.equals(getResources().getString(R.string.checkout))) {
+                                    workDay = String.valueOf(Integer.parseInt(NgayCong));
+                                    lateMinute = String.valueOf(Integer.parseInt(PhutDiMuon) + Integer.parseInt(Injector.getEarlyTimeLeave(Injector.getCurrentTime())));
                                 } else {
-                                    ngaycongCheck = String.valueOf(Integer.parseInt(NgayCong));
+                                    workDay = String.valueOf(Integer.parseInt(NgayCong) + 1);
+                                    lateMinute = String.valueOf(Integer.parseInt(PhutDiMuon) + Integer.parseInt(Injector.getLateTimeArrive(Injector.getCurrentTime())));
                                 }
-                                Log.d("ngaycongCheck",ngaycongCheck);
-//                                updateTimeRecord(String.valueOf(ngaycongCheck),
-//                                        String.valueOf(Integer.parseInt(PhutDiMuon) + Integer.parseInt(Injector.getLateTime(Injector.getCurrentTime()))));
+                                updateTimeKeeping(String.valueOf(workDay), lateMinute);
                             }
                         }
                     } catch (Exception e) {
@@ -104,9 +106,42 @@ public class SuccessActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    void updateTimeRecord(String workDay, String lateMinute) {
+    void addTimeRecord(String workDay, String lateMinute) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ADD_TIME_RECORER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    try {
+                        Log.d("responseAdd", response);
+                    } catch (Exception e) {
+                        Toast.makeText(SuccessActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("err", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV", Injector.getEmployee().getId());
+                param.put("Thang", String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
+                param.put("NgayCong", workDay);
+                param.put("PhutDiMuon", lateMinute);
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void updateTimeKeeping(String workDay, String lateMinute) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_UPDATE_TIME_RECORER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
@@ -136,7 +171,6 @@ public class SuccessActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
 
 
     private void initView() {

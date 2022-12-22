@@ -80,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String idRoom = jsonObject.getString("MaPB");
                             String role = jsonObject.getString("ChucVu");
                             String name = jsonObject.getString("TenNV");
+                            String luong = jsonObject.getString("MucLuong");
+                            String email = jsonObject.getString("Email");
+                            String phone = jsonObject.getString("Phone");
                             if (edtTextUser.getText().toString().equals(msv) && edtPassword.getText().toString().equals(password)) {
                                 Employee employee = Injector.getEmployee();
                                 employee.setId(msv);
@@ -87,9 +90,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 employee.setPassword(password);
                                 employee.setIdRoom(idRoom);
                                 employee.setRole(role);
+                                employee.setMucluong(luong);
+                                employee.setEmail(email);
+                                employee.setPhone(phone);
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                            } else {
-//                                Toast.makeText(LoginActivity.this, "Fail to connect", Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             Toast.makeText(LoginActivity.this, "Fail to connect server employee", Toast.LENGTH_LONG).show();

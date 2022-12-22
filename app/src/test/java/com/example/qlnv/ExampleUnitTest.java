@@ -9,6 +9,7 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -51,5 +52,57 @@ public class ExampleUnitTest {
         long diff = date2.getTime() - date1.getTime();
         long rs = diff/(1000*60);
         Log.d("now",rs +"");
+    }
+    @Test
+    public void test123() {
+        int month = 11;
+        Calendar firstDayCal = Calendar.getInstance();
+        Calendar lastDayCal = Calendar.getInstance();
+        firstDayCal.set(Calendar.MONTH, month-1);//here we should put 0-11;
+        lastDayCal.set(Calendar.MONTH, month-1);
+        int firstDay = firstDayCal.getActualMinimum(Calendar.DAY_OF_MONTH);
+        int lastDay = firstDayCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        firstDayCal.set(Calendar.DAY_OF_MONTH, firstDay);
+        lastDayCal.set(Calendar.DAY_OF_MONTH, lastDay);
+        //any month have no less than 28 days, so 4 full weeks - so 8 weekends.
+        int total = 8;
+        switch (lastDay) {
+            case 29:
+                //leap-year february can have one extra holiday if it starts on sunday or ends on saturday
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                    total++;
+                }   break;
+            case 30:
+                //30-day month can have one extra holiday if it starts on sunday or ends on saturday...
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                    total++;
+                    //...or two extra holiday if it starts on saturday or ends on sunday
+                } else if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)){
+                    total = total + 2;
+                }   break;
+            case 31:
+                //31-day month can have one extra holiday if it starts on sunday or ends on saturday...
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                    total++;
+                    //...or two extra holiday if it starts on (friday or saturday) or ends on (sunday or monday)
+                } else if (((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) || (firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) ||
+                        ((lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY))) {
+                    total = total + 2;
+                }   break;
+            default:
+                break;
+        }
+        Log.d("total",lastDay + "");
+        Log.d("total1",total + "");
+
+    }
+
+    @Test
+    public void test345() {
+        int dayWork =Injector.countHolidays(Calendar.getInstance().get(Calendar.MONTH) + 1);
+        double percent = Double.parseDouble("1")/Double.parseDouble(String.valueOf(dayWork));
+        double salary = Integer.parseInt("1000000")  * percent;
+        Log.d("percent",percent+"");
+        Log.d("salary",(int)salary+"");
     }
 }

@@ -101,7 +101,6 @@ public class ManageUserActivity extends Activity {
                             Room room = new Room();
                             room.setId(idRoom);
                             room.setName(nameRoom);
-                            //room.dsnv
                             arrRoom.add(room);
                             getUserInRoom(room);
                         } catch (Exception e) {
@@ -113,7 +112,7 @@ public class ManageUserActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("error",error+"");
+                Log.d("error", error + "");
             }
         });
 
@@ -129,7 +128,7 @@ public class ManageUserActivity extends Activity {
                 if (response != null) {
                     try {
                         JSONObject jsonObject1 = new JSONObject(response);
-                        for (int i = 0 ; i < jsonObject1.length() ; i++) {
+                        for (int i = 0; i < jsonObject1.length(); i++) {
                             JSONObject jsonObject = jsonObject1.getJSONObject(String.valueOf(i));
                             String mnv = jsonObject.getString("MaNV");
                             String name = jsonObject.getString("TenNV");
@@ -146,7 +145,7 @@ public class ManageUserActivity extends Activity {
                             if (gioitinh.equals("nam")) {
                                 sex = true;
                             }
-                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,room.getId(),stk,luong);
+                            Employee employee = new Employee(mnv, name, date, diachi, sex, phone, email, cmnd, chucvu, room.getId(), stk, luong);
                             room.dsnv.add(employee);
                             adapterPb.notifyDataSetChanged();
                         }
@@ -172,7 +171,6 @@ public class ManageUserActivity extends Activity {
         };
         requestQueue.add(stringRequest);
     }
-
 
 
     public void getFormWidgets() {
@@ -214,31 +212,32 @@ public class ManageUserActivity extends Activity {
     }
 
     void addRoom(Room room) {
-        Log.d("ROOM",room.getId());
+        Log.d("ROOM", room.getId());
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,Injector.URL_ADD_ROOM, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_ADD_ROOM, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
-                    Log.d("responseAddRoom",response+"");
+                    Log.d("responseAddRoom", response + "");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("error",error+"");
+                Log.d("error", error + "");
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<>();
-                param.put("TenPB",room.getName());
-                param.put("MaPB",room.getId());
-                Log.d("employee",room.getId());
+                param.put("TenPB", room.getName());
+                param.put("MaPB", room.getId());
+                Log.d("employee", room.getId());
                 return param;
             }
-        };;
+        };
+        ;
 
         requestQueue.add(stringRequest);
     }
@@ -249,7 +248,7 @@ public class ManageUserActivity extends Activity {
         ArrayList<Room> arrRoom = new ArrayList<>();
         String mapb = editMapb.getText() + "";
         String tenpb = editTenpb.getText() + "";
-        Log.d("mapb",editMapb.getText() + "abc");
+        Log.d("mapb", editMapb.getText() + "abc");
         arrRoom = adapterPb.getArrPhongBan();
 
 //        boolean alreadyHasId =
@@ -311,8 +310,7 @@ public class ManageUserActivity extends Activity {
             Employee nv = (Employee) bundle.getSerializable("NHANVIEN");
 //            adapterPb.arrRoom.clear();
 //            getDataRoom();
-        }
-        else if (resultCode == THIET_LAP_TP_PP_THANHCONG ||
+        } else if (resultCode == THIET_LAP_TP_PP_THANHCONG ||
                 resultCode == CAPNHAT_DS_NHAN_VIEN_THANHCONG) {
 
             Bundle bundle = data.getBundleExtra("DATA");
@@ -373,7 +371,7 @@ public class ManageUserActivity extends Activity {
             public void onResponse(String response) {
                 if (response != null) {
                     try {
-                        Log.d("response",response);
+                        Log.d("response", response);
 
                     } catch (Exception e) {
                     }
@@ -382,7 +380,7 @@ public class ManageUserActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
+                Log.d("err", error + "");
             }
         }) {
             @Nullable
