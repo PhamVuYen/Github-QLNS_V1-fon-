@@ -46,9 +46,7 @@ public class EmployeeListActivity extends AppCompatActivity {
     TextView txtmsg;
     ImageView btnback;
     ListView lvNhanvien;
-    ArrayList<Employee> arrNhanvien = null;
-    //Nhân viên Adapter để hiển thị thông tin
-    //và chi tiết : chức vụ, giới tính
+    ArrayList<Employee> arrNhanvien = new ArrayList<>();
     EmployeeAdapter adapter = null;
     Room pb = null;
     private Employee nvSelected = null;
@@ -63,20 +61,29 @@ public class EmployeeListActivity extends AppCompatActivity {
         lvNhanvien = findViewById(R.id.lvnhanvien);
         getDataFromMain();
         addEvents();
-        registerForContextMenu(lvNhanvien);
+        if (Injector.getEmployee().getRole().equals("ADMIN")) {
+            registerForContextMenu(lvNhanvien);
+        }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
 
     public void getDataFromMain() {
         Intent i = getIntent();
         Bundle b = i.getBundleExtra("DATA");
         pb = (Room) b.getSerializable("PHONGBAN");
         arrNhanvien = pb.getListNhanVien();
+        Log.d("arrNhanvien",arrNhanvien.size()+"");
         adapter = new EmployeeAdapter(this,
                 R.layout.layout_item_custom,
                 arrNhanvien);
         lvNhanvien.setAdapter(adapter);
-        txtmsg.setText( "Phòng: " + pb.getName() );
-        Log.d("idPhong",pb.getId());
+        txtmsg.setText("Phòng: " + pb.getName());
     }
 
 
@@ -99,6 +106,7 @@ public class EmployeeListActivity extends AppCompatActivity {
             }
 
         });
+
     }
 
 
@@ -161,12 +169,6 @@ public class EmployeeListActivity extends AppCompatActivity {
         startActivityForResult(i, ManageUserActivity.MO_ACTIVITY_SUA_NHAN_VIEN);
     }
 
-    /**
-     * hàm chuyển phòng ban cho nhân viên đang chọn
-     * đơn thuần là mở Activity chuyển phòng ban
-     * Activity này có nhiệm vụ hiển thị toàn bộ phòng ban
-     * rồi cho phép người sử dụng chọn phòng ban để chuyển
-     */
     public void doChuyenPhongBan() {
         Intent i = new Intent(this, ChuyenPhongBanActivity.class);
         Bundle b = new Bundle();
@@ -175,10 +177,6 @@ public class EmployeeListActivity extends AppCompatActivity {
         startActivityForResult(i, ManageUserActivity.MO_ACTIVITY_CHUYENPHONG);
     }
 
-    /**
-     * hàm cho phép xóa nhân viên hiện tại
-     * (đã quen thuộc quá)
-     */
     public void doXoaNhanVien() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hỏi xóa");
@@ -212,7 +210,7 @@ public class EmployeeListActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response != null) {
                     try {
-                        Log.d("response",response);
+                        Log.d("response", response);
 
                     } catch (Exception e) {
                     }
@@ -221,7 +219,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("err",error+"");
+                Log.d("err", error + "");
             }
         }) {
             @Nullable
@@ -241,6 +239,17 @@ public class EmployeeListActivity extends AppCompatActivity {
         b.putSerializable("PHONGBAN", pb);
         i.putExtra("DATA", b);
         setResult(ManageUserActivity.CAPNHAT_DS_NHAN_VIEN_THANHCONG, i);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         finish();
     }
 }

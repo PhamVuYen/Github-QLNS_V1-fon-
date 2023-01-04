@@ -5,9 +5,10 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Entity(tableName = "room")
-public class Room  implements Serializable {
+public class Room implements Serializable {
 
     @PrimaryKey(autoGenerate = false)
     private String id;
@@ -72,9 +73,9 @@ public class Room  implements Serializable {
     }
 
 
-
-
     public ArrayList<Employee> getListNhanVien() {
+        HashSet<Employee> set = new HashSet<Employee>(dsnv);
+        dsnv = new ArrayList<Employee>(set);
         return dsnv;
     }
 

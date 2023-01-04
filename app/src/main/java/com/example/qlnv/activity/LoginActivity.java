@@ -14,11 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.qlnv.ConnectionAsync;
 import com.example.qlnv.Injector;
 import com.example.qlnv.R;
 import com.example.qlnv.SharedPref;
 import com.example.qlnv.model.Employee;
-import com.example.qlnv.model.Role;
 import com.example.qlnv.roomdb.UserDatabase;
 import com.example.qlnv.roomdb.UserDatabaseClient;
 import com.google.android.material.button.MaterialButton;
@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     MaterialButton btnLogin;
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         initView();
         btnLogin.setOnClickListener(this);
     }
@@ -61,8 +62,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
-                getData();
-//                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                try {
+                    if (new ConnectionAsync().execute().get()) {
+                        getData();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Check connection again ", Toast.LENGTH_LONG).show();
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -96,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             }
                         } catch (Exception e) {
-                            Toast.makeText(LoginActivity.this, "Fail to connect server employee", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -111,39 +121,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         requestQueue.add(jsonArrayRequest);
     }
-
-
-    class LoginUserTask extends AsyncTask<Void, Void, Void> {
-
-        private final String username;
-        private final String password;
-        private ArrayList<Employee> users = new ArrayList<>();
-
-        public LoginUserTask(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            UserDatabase databaseClient = UserDatabaseClient.getInstance(getApplicationContext());
-            users = (ArrayList<Employee>) databaseClient.userDao().observeAllUser();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            for (Employee user : users) {
-                if (username.equals(user.getName()) && password.equals(user.getPassword())) {
-                    SharedPref sharedPref = SharedPref.getInstance();
-                    sharedPref.setUser(LoginActivity.this, user);
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    return;
-                }
-            }
-            Toast.makeText(LoginActivity.this, "User not exist", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }

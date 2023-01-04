@@ -6,9 +6,13 @@ import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Room;
 import com.example.qlnv.model.TimeKeeping;
 
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -17,6 +21,7 @@ import java.util.Date;
 public class Injector {
     public static Employee employee;
     public static TimeKeeping timeKeeping;
+<<<<<<< HEAD
     public static String IP = "192.168.1.193";
     public static String URL_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaffsRoom.php";
@@ -24,6 +29,16 @@ public class Injector {
     public static String URL_DEL_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/delStaff.php";
     public static String URL_EDIT_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/editStaff.php";
     public static String URL_UPDATE_PASS = "http://" + IP + ":8080/QLNS_V1/Login/updatePassword.php";
+=======
+    public static String IP = "192.168.100.149";
+    public static String URL_CONNECT_SERVER = "http://" + IP + ":80/QLNS_V1/Connect.php";
+    public static String URL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/getStaff.php";
+    public static String URL_QUERY_USER_ROOM = "http://" + IP + ":80/QLNS_V1/Staffs/getStaffsRoom.php";
+    public static String URL_ADD_USER = "http://" + IP + ":80/QLNS_V1/Staffs/addStaff.php";
+    public static String URL_DEL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/delStaff.php";
+    public static String URL_EDIT_USER = "http://" + IP + ":80/QLNS_V1/Staffs/editStaff.php";
+    public static String URL_UPDATE_PASS = "http://" + IP + ":80/QLNS_V1/Login/updatePassword.php";
+>>>>>>> bd6ec5e897697f70327ab17deee1df99bbc3fab1
 
     public static String URL_ROOM = "http://" + IP + ":8080/QLNS_V1/Departments/getPhongBan.php";
     public static String URL_ADD_ROOM = "http://" + IP + ":8080/QLNS_V1/Departments/addPhongBan.php";
@@ -117,7 +132,7 @@ public class Injector {
         Date date2 = df.parse(TIME_ARRIVE);
         long diff = Math.abs(date1.getTime() - date2.getTime());
         long rs = diff / (1000 * 60);
-        Log.d("checkInLate",rs+"|"+currentTime);
+        Log.d("checkInLate", rs + "|" + currentTime);
         return String.valueOf(rs);
     }
 
@@ -127,7 +142,7 @@ public class Injector {
         Date date2 = df.parse(TIME_LEAVE);
         long diff = Math.abs(date1.getTime() - date2.getTime());
         long rs = diff / (1000 * 60);
-        Log.d("checkOutEarly",rs+"");
+        Log.d("checkOutEarly", rs + "");
         return String.valueOf(rs);
     }
 
@@ -138,12 +153,12 @@ public class Injector {
         return String.valueOf(punish);
     }
 
-    public static int countHolidays(int month){
+    public static int countHolidays(int month) {
         //assuming month is 1-12
         Calendar firstDayCal = Calendar.getInstance();
         Calendar lastDayCal = Calendar.getInstance();
-        firstDayCal.set(Calendar.MONTH, month-1);//here we should put 0-11;
-        lastDayCal.set(Calendar.MONTH, month-1);
+        firstDayCal.set(Calendar.MONTH, month - 1);//here we should put 0-11;
+        lastDayCal.set(Calendar.MONTH, month - 1);
         int firstDay = firstDayCal.getActualMinimum(Calendar.DAY_OF_MONTH);
         int lastDay = firstDayCal.getActualMaximum(Calendar.DAY_OF_MONTH);
         firstDayCal.set(Calendar.DAY_OF_MONTH, firstDay);
@@ -153,30 +168,48 @@ public class Injector {
         switch (lastDay) {
             case 29:
                 //leap-year february can have one extra holiday if it starts on sunday or ends on saturday
-                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) {
                     total++;
-                }   break;
+                }
+                break;
             case 30:
                 //30-day month can have one extra holiday if it starts on sunday or ends on saturday...
-                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) {
                     total++;
                     //...or two extra holiday if it starts on saturday or ends on sunday
-                } else if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)){
+                } else if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)) {
                     total = total + 2;
-                }   break;
+                }
+                break;
             case 31:
                 //31-day month can have one extra holiday if it starts on sunday or ends on saturday...
-                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)){
+                if ((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) {
                     total++;
                     //...or two extra holiday if it starts on (friday or saturday) or ends on (sunday or monday)
                 } else if (((firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) || (firstDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) ||
                         ((lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (lastDayCal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY))) {
                     total = total + 2;
-                }   break;
+                }
+                break;
             default:
                 break;
         }
-        return lastDay-total;//as we need workingDays, not weekends
+        return lastDay - total;//as we need workingDays, not weekends
     }
 
+<<<<<<< HEAD
 }
+=======
+    public static LocalDate getLocalDateTask(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return  LocalDate.parse(date, formatter);
+    }
+
+    public static LocalTime getLocalTimeTask(String time) {
+        return LocalTime.parse(time);
+
+    }
+
+
+}
+>>>>>>> bd6ec5e897697f70327ab17deee1df99bbc3fab1

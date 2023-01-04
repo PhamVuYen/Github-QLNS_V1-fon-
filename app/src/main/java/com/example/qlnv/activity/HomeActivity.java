@@ -35,6 +35,7 @@ import com.example.qlnv.R;
 import com.example.qlnv.activity.account.AccountActivity;
 import com.example.qlnv.activity.assigntask.AllTaskActivity;
 import com.example.qlnv.activity.assigntask.AssignTaskActivity;
+import com.example.qlnv.activity.assigntask.CalendarActivity;
 import com.example.qlnv.activity.assigntask.TaskActivity;
 import com.example.qlnv.activity.manageuser.EmployeeListActivity;
 import com.example.qlnv.activity.manageuser.ManageUserActivity;
@@ -57,7 +58,7 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    ConstraintLayout timeKeeping, manageUser, assignTask, myTask, account, viewAllTask,summary;
+    ConstraintLayout timeKeeping, manageUser, assignTask, myTask, account, viewAllTask, summary;
     TextView tvUserName, tvRole;
     Employee employee;
     ArrayList<Employee> arrayList = new ArrayList<>();
@@ -83,12 +84,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong("mTime", System.currentTimeMillis()).apply();
         getDataRoom();
+        getUserInRoom(employee.getIdRoom());
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getUserInRoom(employee.getIdRoom());
     }
 
     void initView() {
@@ -109,7 +111,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (id) {
             case R.id.timekeeping:
                 Preference preferences = Preference.getInstance(HomeActivity.this);
-                if (!preferences.isTimeToClick()&&preferences.getIDUser().equals(Injector.getEmployee().getId())) {
+                if (!preferences.isTimeToClick() && preferences.getIDUser().equals(Injector.getEmployee().getId())) {
                     Toast.makeText(HomeActivity.this, "You have checked out", Toast.LENGTH_LONG).show();
                 } else {
                     startActivity(new Intent(HomeActivity.this, TimeKeepingActivity.class));
@@ -118,14 +120,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.manageuser:
                 if (employee.getRole().equals("ADMIN")) {
                     startActivity(new Intent(HomeActivity.this, ManageUserActivity.class));
-                }
-                else if (employee.getRole().equals("Trưởng phòng")) {
+                } else if (employee.getRole().equals("Trưởng phòng")) {
                     Room room = new Room();
                     room.setId(employee.getIdRoom());
-                    for(Room r : arrRoom) {
-                       if (r.getId().equals(employee.getIdRoom())) {
-                           room.setName(r.getName());
-                       }
+                    for (Room r : arrRoom) {
+                        if (r.getId().equals(employee.getIdRoom())) {
+                            room.setName(r.getName());
+                        }
                     }
                     room.dsnv = arrayList;
                     Intent i = new Intent(this, EmployeeListActivity.class);
@@ -155,9 +156,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, AccountActivity.class));
                 break;
             case R.id.viewAllTask:
+//                if (employee.getRole().equals("Trưởng phòng")) {
+//                    if (arrayList.size() > 0) {
+//                        Intent intent = new Intent(HomeActivity.this, AllTaskActivity.class);
+//                        intent.putExtra("id", employee.getId());
+//                        intent.putExtra("listuser", arrayList);
+//                        startActivity(intent);
+//                    }
+//                } else {
+//                    Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
+//                }
                 if (employee.getRole().equals("Trưởng phòng")) {
                     if (arrayList.size() > 0) {
-                        Intent intent = new Intent(HomeActivity.this, AllTaskActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, CalendarActivity.class);
                         intent.putExtra("id", employee.getId());
                         intent.putExtra("listuser", arrayList);
                         startActivity(intent);
@@ -209,7 +220,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("error",error+"");
+                Log.d("error", error + "");
                 Toast.makeText(HomeActivity.this, error + "Can't connect server employee", Toast.LENGTH_LONG).show();
             }
         });
@@ -242,7 +253,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             if (gioitinh.equals("nam")) {
                                 sex = true;
                             }
-                            Employee employee = new Employee(mnv,name,date,diachi,sex,phone,email,cmnd,chucvu,idroom,stk,luong);
+                            Employee employee = new Employee(mnv, name, date, diachi, sex, phone, email, cmnd, chucvu, idroom, stk, luong);
                             arrayList.add(employee);
                         }
                         Log.d("responseUser", response);
