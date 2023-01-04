@@ -35,9 +35,9 @@ import java.util.Map;
 public class AllTaskActivity extends AppCompatActivity {
     public static final int UPDATE_TASK = 1111;
     RecyclerView rvTask;
+    AllTaskAdapter adapterAllTask;
     Button btnAssignTask;
     ArrayList<Task> tasks = new ArrayList<>();
-    AllTaskAdapter adapterAllTask;
     ArrayList<Employee> arrayList = new ArrayList<>();
     String id = "";
     int position = -1;

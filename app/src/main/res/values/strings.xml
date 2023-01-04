@@ -48,4 +48,7 @@
     <string name="reason">Lý do</string>
     <string name="enter_reason">Nhập lý do ...</string>
     <string name="sendAbsent">Send</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="empty_task_list">Danh sách nhiệm vụ trống</string>
 </resources>

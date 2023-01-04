@@ -26,10 +26,24 @@ public class EmployeeAdapter extends ArrayAdapter<Employee> {
         this.layoutId = textViewResourceId;
         this.arrNhanVien = objects;
     }
+    @Override
+    public int getCount() {
+        //Trả về tổng số phần tử, nó được gọi bởi ListView
+        return arrNhanVien.size();
+    }
+
+    @Override
+    public Employee getItem(int position) {
+        //Trả về dữ liệu ở vị trí position của Adapter, tương ứng là phần tử
+        //có chỉ số position trong listProduct
+        return arrNhanVien.get(position);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = context.getLayoutInflater().inflate(layoutId, null);
+        if (convertView == null) {
+            convertView = context.getLayoutInflater().inflate(layoutId, null);
+        }
         TextView txtnv = (TextView) convertView.findViewById(R.id.txtShortInfor);
         TextView txtmotanv = (TextView) convertView.findViewById(R.id.txtDetailInfor);
         ImageView img = (ImageView) convertView.findViewById(R.id.imgview);

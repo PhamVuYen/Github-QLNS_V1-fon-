@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,6 +36,8 @@ import java.util.Map;
 
 public class TaskActivity extends AppCompatActivity {
     RecyclerView rvTask;
+    LinearLayout layoutEmptyList;
+    ImageView imgBack;
     Employee employee;
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapterTask;
@@ -54,6 +59,12 @@ public class TaskActivity extends AppCompatActivity {
         });
         rvTask.setAdapter(adapterTask);
         rvTask.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -66,6 +77,8 @@ public class TaskActivity extends AppCompatActivity {
 
     void initView() {
         rvTask = findViewById(R.id.rv_task);
+        layoutEmptyList = findViewById(R.id.layout_emptyTask);
+        imgBack = findViewById(R.id.imgBack);
     }
 
     private void getTaskOfUser(Employee employee) {

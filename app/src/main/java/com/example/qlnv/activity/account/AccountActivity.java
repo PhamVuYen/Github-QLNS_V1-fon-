@@ -21,14 +21,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        tvChangePassword = findViewById(R.id.btnChangePassword);
-        tvLogout = findViewById(R.id.btnLogOut);
-        tvAbsent = findViewById(R.id.btnAbsent);
-        tvName = findViewById(R.id.tvName);
-        tvID = findViewById(R.id.tvID);
-        tvDoB = findViewById(R.id.tvDoB);
-        tvMail = findViewById(R.id.textView_show_gender);
-        tvMobile = findViewById(R.id.textView_show_mobile);
+        initView();
         employee = Injector.getEmployee();
         tvChangePassword.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
@@ -38,8 +31,17 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         tvDoB.setText(employee.getDateOfbirth()+"");
         tvMail.setText(employee.getEmail());
         tvMobile.setText(employee.getPhone());
+    }
 
-
+    private void initView() {
+        tvChangePassword = findViewById(R.id.btnChangePassword);
+        tvLogout = findViewById(R.id.btnLogOut);
+        tvAbsent = findViewById(R.id.btnAbsent);
+        tvName = findViewById(R.id.tvName);
+        tvID = findViewById(R.id.tvID);
+        tvDoB = findViewById(R.id.tvDoB);
+        tvMail = findViewById(R.id.textView_show_gender);
+        tvMobile = findViewById(R.id.textView_show_mobile);
     }
 
     @Override

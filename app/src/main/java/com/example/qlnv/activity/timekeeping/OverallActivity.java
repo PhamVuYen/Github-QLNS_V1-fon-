@@ -65,15 +65,15 @@ public class OverallActivity extends AppCompatActivity {
                                 tvWorkDay.setText(NgayCong);
                                 tvLateMinute.setText(PhutDiMuon);
                                 tvFine.setText(Injector.getPunish(PhutDiMuon));
-                                int dayWork =Injector.countHolidays(Calendar.getInstance().get(Calendar.MONTH) + 1);
-                                double percent = Double.parseDouble(NgayCong)/Double.parseDouble(String.valueOf(dayWork));
-                                double salary = Integer.parseInt(Injector.getEmployee().getMucluong())*percent;
-                                int realSalary = (int) salary - Integer.parseInt(Injector.getPunish(PhutDiMuon));
-                                tvSalary.setText(realSalary);
+//                                int dayWork =Injector.countHolidays(Calendar.getInstance().get(Calendar.MONTH) + 1);
+//                                double percent = Double.parseDouble(NgayCong)/Double.parseDouble(String.valueOf(dayWork));
+//                                double salary = Integer.parseInt(Injector.getEmployee().getMucluong())*percent;
+//                                int realSalary = (int) salary - Integer.parseInt(Injector.getPunish(PhutDiMuon));
+//                                tvSalary.setText(getSalary);
                             }
                         }
                     } catch (Exception e) {
-                        Toast.makeText(OverallActivity.this, "Some error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(OverallActivity.this, "Some error" +e.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -102,4 +102,5 @@ public class OverallActivity extends AppCompatActivity {
         tvSalary = findViewById(R.id.tvSalary);
         btnDetail = findViewById(R.id.btnDetail);
     }
+
 }

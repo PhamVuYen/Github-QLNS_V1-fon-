@@ -104,7 +104,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                         AssignTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        tvHourEnd.setText(hourOfDay + ":" + minute);
+                        String hour = hourOfDay < 10 ? "0" + hourOfDay : String.valueOf(hourOfDay) ;
+
+                        tvHourEnd.setText(hour + ":" + minute);
                     }
                 }, hour, minute, true);
                 timePicker.show();
@@ -219,7 +221,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        tvDateEnd.setText(dayOfMonth + "/" + month + "/" + year);
+        int mMonth = month + 1;
+        tvDateEnd.setText(dayOfMonth + "-" + mMonth  + "-" + year);
     }
 
     public ArrayList<String> getDataSpinner() {
