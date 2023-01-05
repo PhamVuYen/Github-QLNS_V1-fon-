@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class ChangePasswordActivity extends AppCompatActivity {
     TextInputEditText edtOldPass, edtNewPass, edtNewPassAgain;
     MaterialButton btnSave;
+    ImageView imgBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +54,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             }
         });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void initView() {
@@ -59,6 +67,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         edtNewPass = findViewById(R.id.tietPasswordNewPass);
         edtNewPassAgain = findViewById(R.id.tietPasswordConfirmNewPass);
         btnSave = findViewById(R.id.btnChangePassword);
+        imgBack = findViewById(R.id.imgBack);
     }
 
     private void updatePasswordToDB(Employee nv) {

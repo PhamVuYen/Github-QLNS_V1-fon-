@@ -64,11 +64,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     private Spinner spinner;
     private String[] separated = new String[2];
     private Employee employee = null;
-    private Room room = null;
     private ArrayList<Employee> arrayList = new ArrayList<>();
     private String ID = "";
     ArrayAdapter<String> adapter;
-
     ArrayList<String> items = new ArrayList<>();
 
     @Override
@@ -83,8 +81,6 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
 
         employee = Injector.getEmployee();
         ID = employee.getId();
-        items.clear();
-        arrayList.clear();
         arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
         task_id_unique = UUID.randomUUID().toString();
         task_assigned_btn.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +101,8 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String hour = hourOfDay < 10 ? "0" + hourOfDay : String.valueOf(hourOfDay) ;
-
-                        tvHourEnd.setText(hour + ":" + minute);
+                        String minutes = minute < 10 ? "0" + minute : String.valueOf(minute);
+                        tvHourEnd.setText(hour + ":" + minutes);
                     }
                 }, hour, minute, true);
                 timePicker.show();
@@ -222,7 +218,9 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         int mMonth = month + 1;
-        tvDateEnd.setText(dayOfMonth + "-" + mMonth  + "-" + year);
+        String sDay = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
+        String sMonth =  mMonth < 10 ? "0" + mMonth : String.valueOf(mMonth);
+        tvDateEnd.setText(sDay + "-" + sMonth  + "-" + year);
     }
 
     public ArrayList<String> getDataSpinner() {

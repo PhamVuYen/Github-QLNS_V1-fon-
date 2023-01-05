@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.qlnv.Injector;
@@ -17,6 +18,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
     TextView tvChangePassword,tvLogout,tvAbsent,tvName,tvID,tvDoB,tvMail,tvMobile;
     Employee employee;
+    ImageView imgBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         tvChangePassword.setOnClickListener(this);
         tvLogout.setOnClickListener(this);
         tvAbsent.setOnClickListener(this);
+        imgBack.setOnClickListener(this);
         tvID.setText(employee.getId());
         tvName.setText(employee.getName());
         tvDoB.setText(employee.getDateOfbirth()+"");
@@ -42,6 +45,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         tvDoB = findViewById(R.id.tvDoB);
         tvMail = findViewById(R.id.textView_show_gender);
         tvMobile = findViewById(R.id.textView_show_mobile);
+        imgBack = findViewById(R.id.imgBack);
     }
 
     @Override
@@ -56,6 +60,9 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnAbsent:
                 startActivity(new Intent(AccountActivity.this,AbsentActivity.class));
+                break;
+            case R.id.imgBack:
+                finish();
                 break;
         }
     }
