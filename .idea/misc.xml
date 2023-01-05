@@ -16,9 +16,11 @@
         <entry key="..\:/AndroidVNProject/QLNV/app/src/main/res/layout/layout_item_pb.xml" value="0.3619791666666667" />
         <entry key="..\:/AndroidVNProject/QLNV/app/src/main/res/menu/contextmenu_nhanvien.xml" value="0.3619791666666667" />
         <entry key="..\:/AndroidVNProject/QLNV/app/src/main/res/menu/contextmenu_phongban.xml" value="0.3619791666666667" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/drawable/custom_cell_event_red.xml" value="0.2165" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_absent.xml" value="0.196875" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_account.xml" value="0.196875" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_assign_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_calendar_task.xml" value="0.25416666666666665" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_chuyen_phong_ban.xml" value="0.36666666666666664" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_danh_sach_nhan_vien.xml" value="0.36666666666666664" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_edit_nhan_vien_new.xml" value="0.36666666666666664" />
@@ -29,7 +31,17 @@
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_task.xml" value="0.25416666666666665" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_them_nhan_vien.xml" value="0.36666666666666664" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_thiet_lap_truong_phong.xml" value="0.36666666666666664" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_time_keeping_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_update_status_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_update_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/activity_user_tasks_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/calendar_cell.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/event_cell.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/hour_cell.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/item_tableview.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/layout_test.xml" value="0.25416666666666665" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/layout/task_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/DESKTOP/QLNV/app/src/main/res/menu/contextmenu_nhanvien.xml" value="0.25416666666666665" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/menu/contextmenu_phongban.xml" value="0.36666666666666664" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/mipmap-hdpi/ic_launcher.xml" value="0.305" />
         <entry key="..\:/DESKTOP/QLNV/app/src/main/res/mipmap-mdpi/ic_launcher.xml" value="0.124" />

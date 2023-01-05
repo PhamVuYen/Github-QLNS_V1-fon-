@@ -21,7 +21,7 @@ import java.util.Date;
 public class Injector {
     public static Employee employee;
     public static TimeKeeping timeKeeping;
-<<<<<<< HEAD
+
     public static String IP = "192.168.1.193";
     public static String URL_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP + ":8080/QLNS_V1/Staffs/getStaffsRoom.php";
@@ -29,16 +29,6 @@ public class Injector {
     public static String URL_DEL_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/delStaff.php";
     public static String URL_EDIT_USER = "http://" + IP + ":8080/QLNS_V1/Staffs/editStaff.php";
     public static String URL_UPDATE_PASS = "http://" + IP + ":8080/QLNS_V1/Login/updatePassword.php";
-=======
-    public static String IP = "192.168.100.149";
-    public static String URL_CONNECT_SERVER = "http://" + IP + ":80/QLNS_V1/Connect.php";
-    public static String URL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/getStaff.php";
-    public static String URL_QUERY_USER_ROOM = "http://" + IP + ":80/QLNS_V1/Staffs/getStaffsRoom.php";
-    public static String URL_ADD_USER = "http://" + IP + ":80/QLNS_V1/Staffs/addStaff.php";
-    public static String URL_DEL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/delStaff.php";
-    public static String URL_EDIT_USER = "http://" + IP + ":80/QLNS_V1/Staffs/editStaff.php";
-    public static String URL_UPDATE_PASS = "http://" + IP + ":80/QLNS_V1/Login/updatePassword.php";
->>>>>>> bd6ec5e897697f70327ab17deee1df99bbc3fab1
 
     public static String URL_ROOM = "http://" + IP + ":8080/QLNS_V1/Departments/getPhongBan.php";
     public static String URL_ADD_ROOM = "http://" + IP + ":8080/QLNS_V1/Departments/addPhongBan.php";
@@ -197,9 +187,7 @@ public class Injector {
         return lastDay - total;//as we need workingDays, not weekends
     }
 
-<<<<<<< HEAD
-}
-=======
+
     public static LocalDate getLocalDateTask(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return  LocalDate.parse(date, formatter);
@@ -212,4 +200,4 @@ public class Injector {
 
 
 }
->>>>>>> bd6ec5e897697f70327ab17deee1df99bbc3fab1
+
