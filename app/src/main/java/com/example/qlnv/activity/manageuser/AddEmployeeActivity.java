@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
     private MaterialToolbar toolbar;
     private DatePickerDialog.OnDateSetListener mDataSetListener;
     private String idRoom = "";
+    private ImageView imgBack;
     private Employee nv = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
     }
 
     public void getFormWidgets() {
+        imgBack = findViewById(R.id.imgBack);
         btnXoaTrang = findViewById(R.id.btnxoatrang);
         btnLuuNhanVien = findViewById(R.id.btnluunv);
         tvDate = findViewById(R.id.tvDate);
@@ -74,7 +77,7 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
         edtLuong = findViewById(R.id.editLuong);
         edtSTK = findViewById(R.id.editSTK);
         radNam = findViewById(R.id.radNam);
-        toolbar = findViewById(R.id.tool_bar);
+
     }
 
     public void addEvents() {
@@ -102,6 +105,12 @@ public class AddEmployeeActivity extends AppCompatActivity implements DatePicker
                         Calendar.getInstance().get(Calendar.MONTH),
                         Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
                 dialog.show();
+            }
+        });
+        imgBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

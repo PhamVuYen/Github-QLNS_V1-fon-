@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,7 @@ import java.util.Map;
 
 public class SuccessActivity extends AppCompatActivity {
     TextView btnFinish, tvTittle;
-    String idEmployee = "";
+    ImageView imgBack;
     String tittle = "";
 
     @Override
@@ -44,6 +46,13 @@ public class SuccessActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SuccessActivity.this, HomeActivity.class));
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
         tvTittle.setText(tittle);
@@ -176,5 +185,6 @@ public class SuccessActivity extends AppCompatActivity {
     private void initView() {
         btnFinish = findViewById(R.id.btnFinish);
         tvTittle = findViewById(R.id.tvTittle);
+        imgBack = findViewById(R.id.imgBack);
     }
 }

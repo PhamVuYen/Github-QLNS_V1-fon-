@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +40,8 @@ import java.util.Map;
 public class EditEmployeeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 	private TextView btnXoaTrang, btnLuuNhanVien,tvDate;
 	private EditText editTenNv,edtAddress,edtPhone,edtEmail,edtCMND,edtSTK,edtLuong;
+	private ImageView imgBack;
 	private RadioButton radNam;
-	private MaterialToolbar toolbar;
 	private String idRoom = "";
 	private Employee nv = null;
 
@@ -66,7 +67,7 @@ public class EditEmployeeActivity extends AppCompatActivity implements DatePicke
 		edtLuong = findViewById(R.id.editLuong);
 		edtSTK = findViewById(R.id.editSTK);
 		radNam = findViewById(R.id.radNam);
-		toolbar = findViewById(R.id.tool_bar);
+		imgBack = findViewById(R.id.imgBack);
 	}
 
 	public void getDefaultData() {
@@ -120,6 +121,12 @@ public class EditEmployeeActivity extends AppCompatActivity implements DatePicke
 				nv.setPhone(edtPhone.getText()+"");
 				nv.setDateOfbirth(new Date());
 				editUserToDB(nv);
+			}
+		});
+		imgBack.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
 			}
 		});
 	}

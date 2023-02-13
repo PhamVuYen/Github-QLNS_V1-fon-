@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LoginActivity.this, error + "", Toast.LENGTH_LONG).show();
-                Log.d("response1", error + "");
+//                Log.d("response1", error + "");
             }
         });
 

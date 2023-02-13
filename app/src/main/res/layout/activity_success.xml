@@ -6,15 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.timekeeping.SuccessActivity">
-    <TextView
-        android:drawableStart="@drawable/ic_back"
-        android:drawableEnd="@drawable/ic_back_white"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:padding="4dp"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:text="@string/success"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:padding="4dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:text="@string/success"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:padding="4dp"
+            android:id="@+id/imgBack"
+            android:src="@drawable/ic_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+    </RelativeLayout>
 
     <ImageView
         android:src="@drawable/ic_thank"

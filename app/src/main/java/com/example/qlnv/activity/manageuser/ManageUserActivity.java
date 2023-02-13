@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -64,6 +65,7 @@ public class ManageUserActivity extends Activity {
     private TextView btnLuuPb;
     private EditText editMapb, editTenpb;
     private ListView lvpb;
+    private ImageView imgBack;
     private static ArrayList<Room> arrRoom = new ArrayList<>();
     private RoomAdapter adapterPb = null;
     private Room pbSelected = null;
@@ -74,6 +76,7 @@ public class ManageUserActivity extends Activity {
         setContentView(R.layout.activity_manage_user);
         getFormWidgets();
         addEvents();
+
 //        getDataRoom();
     }
 
@@ -178,10 +181,12 @@ public class ManageUserActivity extends Activity {
         editMapb = (EditText) findViewById(R.id.editmapb);
         editTenpb = (EditText) findViewById(R.id.editTenpb);
         lvpb = (ListView) findViewById(R.id.lvphongban);
+        imgBack = findViewById(R.id.imgBack);
         adapterPb = new RoomAdapter(this,
                 R.layout.layout_item_pb,
                 arrRoom);
         lvpb.setAdapter(adapterPb);
+
         registerForContextMenu(lvpb);
     }
 
@@ -208,6 +213,12 @@ public class ManageUserActivity extends Activity {
                 return false;
             }
 
+        });
+        imgBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
     }
 

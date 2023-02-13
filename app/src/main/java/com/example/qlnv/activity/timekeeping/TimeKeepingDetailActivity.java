@@ -50,7 +50,7 @@ public class TimeKeepingDetailActivity extends AppCompatActivity {
     TimeKeepingAdapter timeKeepingAdapter;
     RecyclerView rvTimeKeeping;
     EditText edtSearch;
-    ImageView imgFilter;
+    ImageView imgFilter,imgBack;
     ArrayList<TimeKeeping> lists = new ArrayList<>();
     int lastPosition = -1;
 
@@ -61,6 +61,13 @@ public class TimeKeepingDetailActivity extends AppCompatActivity {
         rvTimeKeeping = findViewById(R.id.rvTimeKeeping);
         edtSearch = findViewById(R.id.edtSearch);
         imgFilter = findViewById(R.id.imgFilter);
+        imgBack = findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         timeKeepingAdapter = new TimeKeepingAdapter(lists, TimeKeepingDetailActivity.this);
         if (Injector.getEmployee().getRole().equals("ADMIN")) {
             queryTimeKeepingAll();

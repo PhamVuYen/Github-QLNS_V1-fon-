@@ -21,7 +21,7 @@ import java.util.Date;
 public class Injector {
     public static Employee employee;
     public static TimeKeeping timeKeeping;
-    public static String IP = "192.168.100.149";
+    public static String IP = "192.168.179.149";
     public static String URL_CONNECT_SERVER = "http://" + IP + ":80/QLNS_V1/Connect.php";
     public static String URL_USER = "http://" + IP + ":80/QLNS_V1/Staffs/getStaff.php";
     public static String URL_QUERY_USER_ROOM = "http://" + IP + ":80/QLNS_V1/Staffs/getStaffsRoom.php";

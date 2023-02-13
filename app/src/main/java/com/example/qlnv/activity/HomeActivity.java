@@ -151,6 +151,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.mytask:
                 startActivity(new Intent(HomeActivity.this, TaskActivity.class));
+//                Intent intent = new Intent(HomeActivity.this, CalendarActivity.class);
+//                intent.putExtra("id", employee.getId());
+//                intent.putExtra("task", "MY_TASK");
+//                startActivity(intent);
                 break;
             case R.id.account:
                 startActivity(new Intent(HomeActivity.this, AccountActivity.class));
@@ -167,12 +171,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //                    Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
 //                }
                 if (employee.getRole().equals("Trưởng phòng")) {
-                    if (arrayList.size() > 0) {
-                        Intent intent = new Intent(HomeActivity.this, CalendarActivity.class);
-                        intent.putExtra("id", employee.getId());
-                        intent.putExtra("listuser", arrayList);
-                        startActivity(intent);
-                    }
+                        Intent i = new Intent(HomeActivity.this, CalendarActivity.class);
+                        i.putExtra("id", employee.getId());
+                        i.putExtra("task", "ALL_TASK");
+                        startActivity(i);
                 } else {
                     Toast.makeText(HomeActivity.this, "You don't have permission", Toast.LENGTH_LONG).show();
                 }

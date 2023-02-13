@@ -3,6 +3,8 @@ package com.example.qlnv.activity.assigntask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Event;
 import com.example.qlnv.model.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
@@ -42,6 +46,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView eventListView;
+    private ImageView imgBack;
     EventAdapter eventAdapter;
     CalendarAdapter calendarAdapter;
     ArrayList<Task> tasks = new ArrayList<>();
@@ -49,6 +54,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
     ArrayList<Event> dailyEvents = new ArrayList<>();
     HashSet<LocalDate> localDates = new HashSet<>();
     String id = "";
+    String check = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +63,33 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
         id = getIntent().getStringExtra("id");
-        arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
+        check = getIntent().getStringExtra("task");
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+//        arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
     }
 
     private void initWidgets() {
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
         eventListView = findViewById(R.id.eventListView);
+        imgBack = findViewById(R.id.imgBack);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         dailyEvents.clear();
-        queryAllTask(id);
+        if (check.equals("ALL_TASK")) {
+            queryAllTask(id);
+        } else {
+            getTaskOfUser(id);
+        }
     }
 
 
@@ -108,8 +127,66 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
             setMonthView();
             eventAdapter = new EventAdapter(this, dailyEvents);
             eventListView.setAdapter(eventAdapter);
+            eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    return false;
+                }
+            });
         }
     }
+
+
+    private void getTaskOfUser(String id) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Injector.URL_QUERY_TASK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("response", response);
+                if (response != null) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String TenCViec = jsonObject.getString("TenCViec");
+                            String MaCViec = jsonObject.getString("MaCViec");
+                            String userid = jsonObject.getString("MaNV");
+                            String DeadlineCV = jsonObject.getString("DealineCV");
+                            String createBy = jsonObject.getString("CreateBy");
+                            String Status = jsonObject.getString("Status");
+                            String[] parts = DeadlineCV.split(" ");
+                            tasks.add(new Task(userid, MaCViec, TenCViec, Status, createBy, DeadlineCV, DeadlineCV));
+                            Event newEvent = new Event(TenCViec, Injector.getLocalDateTask(parts[0]), Injector.getLocalTimeTask(parts[1]), Status);
+                            Event.eventsList.add(newEvent);
+                            localDates.add(Injector.getLocalDateTask(parts[0]));
+                            dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+                            eventAdapter = new EventAdapter(CalendarActivity.this, dailyEvents);
+                            eventListView.setAdapter(eventAdapter);
+                        }
+                        setMonthView();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", error + "");
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> param = new HashMap<>();
+                param.put("MaNV",id);
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+
 
     public void queryAllTask(String id) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());

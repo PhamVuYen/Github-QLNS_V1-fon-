@@ -27,6 +27,7 @@ import com.example.qlnv.adapter.TaskAdapter;
 import com.example.qlnv.model.Employee;
 import com.example.qlnv.model.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,23 +90,22 @@ public class TaskActivity extends AppCompatActivity {
                 Log.d("response", response);
                 if (response != null) {
                     try {
-                        JSONObject jsonArray = new JSONObject(response);
+                        JSONArray jsonArray = new JSONArray(response);
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(String.valueOf(i));
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String TenCViec = jsonObject.getString("TenCViec");
                             String MaCViec = jsonObject.getString("MaCViec");
                             String userid = jsonObject.getString("MaNV");
                             String DealineCV = jsonObject.getString("DealineCV");
+                            String createBy = jsonObject.getString("CreateBy");
                             String Status = jsonObject.getString("Status");
-                            tasks.add(new Task(userid,MaCViec,TenCViec,Status,"abch",DealineCV,DealineCV));
+                            tasks.add(new Task(userid,MaCViec,TenCViec,Status,createBy,DealineCV,DealineCV));
                             adapterTask.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -121,7 +121,6 @@ public class TaskActivity extends AppCompatActivity {
                 return param;
             }
         };
-
         requestQueue.add(stringRequest);
     }
 

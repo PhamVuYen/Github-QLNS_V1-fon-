@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,6 +59,7 @@ import java.util.UUID;
 public class AssignTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private EditText edtTaskName;
+    private ImageView imgBack;
     private Button task_assigned_btn;
     public String task_id_unique;
     private TextView tvHourEnd, tvDateEnd;
@@ -78,7 +80,7 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
         tvHourEnd = findViewById(R.id.tvHourEnd);
         tvDateEnd = findViewById(R.id.tvDateEnd);
         spinner = findViewById(R.id.spinner1);
-
+        imgBack = findViewById(R.id.imgBack);
         employee = Injector.getEmployee();
         ID = employee.getId();
         arrayList = (ArrayList<Employee>) getIntent().getSerializableExtra("listuser");
@@ -87,6 +89,12 @@ public class AssignTaskActivity extends AppCompatActivity implements DatePickerD
             @Override
             public void onClick(View view) {
                 updateTask();
+            }
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

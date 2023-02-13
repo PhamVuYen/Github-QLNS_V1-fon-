@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import java.util.Map;
 public class OverallActivity extends AppCompatActivity {
     TextView tvWorkDay,tvLateMinute,tvFine,tvSalary;
     Button btnDetail;
+    ImageView imgBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,12 @@ public class OverallActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(OverallActivity.this,TimeKeepingDetailActivity.class));
+            }
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
         getInfoByID();
@@ -96,6 +104,7 @@ public class OverallActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        imgBack = findViewById(R.id.imgBack);
         tvWorkDay = findViewById(R.id.tvWorkDay);
         tvLateMinute = findViewById(R.id.tvLateMinute);
         tvFine = findViewById(R.id.tvFine);

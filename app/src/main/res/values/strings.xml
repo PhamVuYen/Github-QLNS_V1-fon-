@@ -36,7 +36,7 @@
     <string name="add_user">Thêm nhân viên</string>
     <string name="edit_user">Sửa thông tin nhân viên</string>
     <string name="view_all_task">Tất cả nhiệm vụ </string>
-    <string name="timekeepingSuccess">Timekeeping is successfully</string>
+    <string name="timekeepingSuccess">Chấm công thành công</string>
     <string name="finish">Kết thúc</string>
     <string name="success">Chấm công</string>
     <string name="checkin">Bạn đã checked in thành công</string>
@@ -51,4 +51,6 @@
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
     <string name="empty_task_list">Danh sách nhiệm vụ trống</string>
+    <string name="update_status_task">Cập nhật  công việc</string>
+    <string name="qlnvien">Danh sách nhân viên</string>
 </resources>
